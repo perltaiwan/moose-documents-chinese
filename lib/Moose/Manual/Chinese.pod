@@ -21,14 +21,72 @@ Moose 希望為 Perl 5 做同樣的事。我們無法真的新增關鍵字，不
 
 Moose 在 C<Class::MOP>（一個中介物件協定）的基礎上建造。利用中介物件協定，
 Moose 提供完整的反射機制給所有使用 Moose 的類別。這意味著你可以問一個類別它有什麼屬性，父類別，
-子類別，方法等等。這全都借助定義好的 API 來達成。
+子類別，方法等等。這全都借助定義好的可程式化介面來達成。
 中介物件協定抽象化了我們所知所愛的那些狡猾把戲如符號表，C<@ISA>。
 
 Moose 來自一大部分的 Perl 6 物件系統和 CLOS，Smalltalk，及其他許多語言裡的優秀想法。
 
 =head1 為何使用 Moose
 
+Moose 讓 Perl 5 的物件導向更簡單也更強大。把 Perl 5 強大的工具封裝成高階，容易使用的宣告式 API。
+最棒的是，你不需要是個魔術師就可以使用它。
 
+但如果你想要大膽深入，Moose 也讓你這麼做，使用和擴充它強大的反射機制就行了。
+
+=head1 一個範例
+
+  package Person;
+
+  use Moose;
+
+  has 'first_name' => (
+      is  => 'rw',
+      isa => 'Str',
+  );
+
+  has 'last_name' => (
+      is  => 'rw',
+      isa => 'Str',
+  );
+
+  no Moose;
+  __PACKAGE__->meta->make_immutable;
+
+這是一個完整可用的類別定義！
+
+  package User;
+
+  use DateTime;
+  use Moose;
+
+  extends 'Person';
+
+  has 'password' => (
+      is  => 'rw',
+      isa => 'Str',
+  );
+
+  has 'last_login' => (
+      is      => 'rw',
+      isa     => 'DateTime',
+      handles => { 'date_of_last_login' => 'date' },
+  );
+
+  sub login {
+      my $self = shift;
+      my $pw   = shift;
+
+      return 0 if $pw ne $self->password;
+
+      $self->last_login( DateTime->now() );
+
+      return 1;
+  }
+
+  no Moose;
+  __PACKAGE__->meta->make_immutable;
+
+我們把程式碼中的逐行解釋移到其他文件中了，不過你能從中看出 Moose 如何把常見的物件導向用語歸納成可宣告的結構。
 
 1;
 
