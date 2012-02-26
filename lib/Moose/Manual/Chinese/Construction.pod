@@ -1,0 +1,157 @@
+package Moose::Manual::Construction::Chinese;
+
+# ABSTRACT: 用 Moose 進行物件建構（與解構）
+
+__END__
+
+=pod
+
+=head1 建構子在哪裡？
+
+B<別為你的類別定義 C<new()> 方法！>
+
+當你在你的類別中使用 C<use Moose>，你的類別就是 L<Moose::Object> 的子類別了。
+L<Moose::Object> 為你的類別提供了 C<new()> 方法。如果你依照 L<Moose::Manual::BestPractices> 的建議讓你的類別不可變動，
+你會卻是得到一個在你的類別內行內展開的類別方法 C<new()> 方法。
+
+
+
+=head1 物件建構和屬性
+
+Moose 提供的建構子接受一組符合你的屬性，當作具名參數的雜湊或是雜湊參照（事實上，符合他們的 C<init_arg>s）。
+這是另一個 Moose 讓你不用擔心類別如何實做的方式。
+簡單的定義好你的類別就可以建立物件實例。
+
+
+
+=head1 物件建構子掛勾
+
+Moose 讓你可以在物件建構中掛勾。
+掛勾可以用來驗證物件的狀態，紀錄日誌，對屬性之外的初始化參數客製化建構過程，或是允許不是雜湊或雜湊參照的建構參數。
+定義你自己的 C<BUILD> 和 C<BUILDARGS> 方法就行了。
+
+只要你的類別定義這些方法，Moose 會在物件建構過程中呼叫它們。
+
+
+
+
+=head2 BUILDARGS
+
+C<BIULDARGS> 方法在物件實例化前就被呼叫，是個類別方法。
+它會收到所有傳給 C<new()> 方法的參數，回傳值必須是個雜湊參照。
+此雜湊參照會被用來建構物件，所以它含有符合屬性名稱（事實上是 C<init_arg>s）的鍵值。
+
+C<BUILDARGS> 常見的用法接受非雜湊（參照）的呼叫方式。
+比方說，我們可能希望 Person 類別可以用社會安全號碼作為唯一的初始化參數，C<< Person->new($ssn) >>。
+
+這時如果沒有 C<BUILDARGS> 方法，Moose 會抱怨，因為它期待一個雜湊或是雜湊參照。
+我們能用 C<BUILDARGS> 方法來接受這樣的呼叫：
+
+  around BUILDARGS => sub {
+      my $orig  = shift;
+      my $class = shift;
+
+      if ( @_ == 1 && !ref $_[0] ) {
+          return $class->$orig( ssn =>$_[0] )
+      }
+      else {
+          return $class->$orig(@_);
+      }
+  };
+
+注意 C<< $class->$orig >>。
+這會呼叫原來 L<Moose::Object> 的 C<BUILDARGS>。
+這方法會幫你分辨雜湊和雜湊參照。
+
+
+
+
+
+
+
+=head2 BUILD
+
+C<BUILD> 方法在物件建構I<後>才被呼叫。
+有許多狀況會使用 C<BUILD>。
+其中一個是確定物件狀態是合法的。
+我們可以用型別系統確定每個屬性是合法的，但是我們無法藉此確認整個物件狀態。
+
+  sub BUILD {
+      my $self = shift;
+
+      if ( $self->country_of_residence eq 'USA' ) {
+          die 'All US residents must have an SSN'
+              unless $self->has_ssn;
+      }
+  }
+
+C<BUILD> 方法也可以用來紀錄日誌或追蹤物件建構過程。
+
+  sub BUILD {
+      my $self = shift;
+
+      debug( 'Made a new person - SSN = ', $self->ssn, );
+  }
+
+C<BUILD> 方法會被傳入傳給建構子的參數（被 C<BUILDARGS> 改寫過了）。
+這讓你有機會處理和物件屬性名稱不同的參數。
+
+  sub BUILD {
+      my $self = shift;
+      my $args = shift;
+
+      $self->add_friend(
+          My::User->new(
+              user_id => $args->{user_id},
+          )
+      );
+  }
+
+
+
+
+
+=head3 BUILD 和父類別
+
+在繼承的階層中 C<BUILD> 方法間的互動和一般 Perl 模組是不一樣的。
+B<< 你永遠不會呼叫 $self->SUPER::BUILD  >>，你也不會幫 C<BUILD> 加上方法修飾子。
+
+Moose 在物件初始化後會安排呼叫所有繼承階層中的 C<BUILD> 方法，I<從父類別到子類別>。
+乍看之下有點讓人驚訝，這和一般繼承的作法相反。
+
+背後的原因是 C<BUILD> 只是被用來增加類別的特殊限制，所以最不優先的限制第一個被呼叫才對。
+對了，這也是 Perl 6 的作法。
+
+
+
+
+
+
+
+=head1 物件解構
+
+Moose 提供了一個物件解構的掛勾 C<DEMOLISH>。
+如同 C<BUILD> 你永遠不會呼叫 C<< $self->SUPER::DEMOLISH >>。
+Moose 會安排呼叫繼承階層中所有的 C<DEMOLISH>，順序同上所述。
+
+每個 C<DEMOLISH> 呼叫都伴隨一個參數。
+
+在大多數狀況下，Perl 內建的垃圾處理機制已經足夠，所以你不用自行提供 C<DEMILISH>。
+
+
+
+
+=head2 解構過程中的例外處理
+
+物件的解構過程和 Perl 的全域變數 C<$@> 和 C<$?> 間的互動可能相當令人困惑。
+
+當物件解構時 Moose 總是 localize C<$?>。
+這代表如果你明確呼叫 C<exit>，離開代碼會被保留下來，即使物件解構子做了系統呼叫。
+
+對於任何解構期間的任何 C<eval> 呼叫，Moose 總是保留在 C<$@>。
+不過如果一個物件的 C<DEMOLISH> 確實使用 die，Moose 會再度拋出錯誤。
+
+如果你不喜歡這些行為，你會需要提供你的 C<DESTROY> 方法而不使用 L<Moose::Object> 提供的同名方法。
+這樣就能保留 C<$@> I<並且>用你自己的錯誤堆疊來捕捉任何物件解構期間的錯誤。
+
+=cut
