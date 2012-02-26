@@ -2,13 +2,11 @@ package Moose::Manual::Chinese;
 
 # ABSTRACT: Moose 是什麼以及如何使用
 
+__END__
+
 =pod
 
-=head1 名稱
-
-Moose::Manual::Chinese - Moose 什麼是以及如何使用
-
-=head1 版本
+=head1 Moose 是什麼
 
 Moose 是一個完整的 Perl 5 物件系統。考慮一個現代化的物件導向語言（Perl 5 當然不是）。
 它提供關鍵字來宣告屬性，建構物件，處理繼承等功能。這些關鍵字作為語言的一部分，你不會在乎他們如何實作。
@@ -88,6 +86,126 @@ Moose 讓 Perl 5 的物件導向更簡單也更強大。把 Perl 5 強大的工�
 
 我們把程式碼中的逐行解釋移到其他文件中了，不過你能從中看出 Moose 如何把常見的物件導向用語歸納成可宣告的結構。
 
-1;
+=head1 目錄
 
-__END__
+=over 4
+
+=item L<Moose::Manual::Chinese::Concepts>
+
+簡介 Moose 的觀念，也和原本 Perl 5 的物件導向對比。
+
+=item L<Moose::Manual::Chinese::Unsweetened>
+
+展示兩個類別範例，都先用 Moose 寫過，然後用原本 Perl 5 的方式來實作。
+
+=item L<Moose::Manual::Chinese::Classes>
+
+如何在你的類別中使用 Moose？
+我現在使用 Moose 了，我要如何建立子類別。
+
+=item L<Moose::Manual::Chinese::Attributes>
+
+屬性是 Moose 物件導向系統的核心。
+一個屬性就是一個物件擁有的一部分資料。
+Moose 有許多屬性相關的功能。
+
+=item L<Moose::Manual::Chinese::Delegation>
+
+委任是一個強大的能力，讓作為自身屬性的物件變成自己的一部分。
+
+=item L<Moose::Manual::Chinese::Construction>
+
+了解 Moose 如何建構物件，尤其是 C<BULID> 和 C<BUILDARGS> 這兩個方法。
+也闡述如何用 C<DEMOLISH> 進行物件解構。
+
+=item L<Moose::Manual::Chinese::MethodModifiers>>
+
+方法修飾子上你可以說「在呼叫 X 方法之前，先做這個」，或是「把方法 X 包在這段程式裡面」。
+方法修飾子在角色和屬性存取器中特別有用。
+
+=item L<Moose::Manual::Chinese::Roles>
+
+角色說明一個類別可以做的事（像是「可以除錯」或是「可以印出」）。
+角色提供一條途徑讓你不用繼承就可以增加類別的行為。
+
+=item L<Moose::Manual::Chinese::Types>
+
+Moose 的型別系統讓妳可以強制屬性的值必須是哪些型別。
+
+=item L<Moose::Manual::Chinese::MOP>
+
+Moose 的中介程式化介面系統（meta API system）讓你能向一個類別詢問其父類別，子類別，方法，屬性，等等。
+
+=item L<Moose::Manual::Chinese::MooseX>
+
+本文件指引一些 CPAN 上好用的 Moose 擴充模組。
+
+=item L<Moose::Manual::Chinese::BestPractices>
+
+Moose 有一大堆功能，毫無疑問有許多途徑去達成目標（譯註：Perl 文化的代表性標語）。
+不過，我們認為取出這些功能的子集，並有一致性的使用它們可以讓大家都生活愉快。
+
+=item L<Moose::Manual::Chinese::FAQ>
+
+Moose 的常見問題集
+
+=item L<Moose::Manual::Chinese::Contributing>
+
+對駭入 Moose 有興趣？讀這份文件就對了。
+
+=item L<Moose::Manual::Chinese::Delta>
+
+這記載向後相容的細節和其他 Moose 的主要變動。
+
+=back
+
+=head1 正當化的理由
+
+如果你仍然問你自己「為什麼我需要這個？」，以下段落就是為你而寫。
+
+=over 4
+
+=item 另一個物件導向系統？
+
+是的，我們知道還有其他很多方法能在 Perl 5 裡建立物件，many of them based on inside-out objects and other such things。
+Moose 的不同之處是它並不是一個新的 Perl 5 物件導向系統，而是一組對現有物件系統的擴充。
+
+Moose 建立 L<Class::MOP> 之上，這是一個 Perl 5 的中介類別系統。
+這代表 Moose 不只讓你建立更好用的 Perl 5 物件，也提供了中介編程的能力。
+
+=item 這是真實可用的系統嗎？或是只是實驗性質的？
+
+Moose 基於 Stevan 對 Perl 6 做的中介模型的原型和實驗而成。
+不過 Moose 並不是一個實驗性質的專案或是一個原型；它是B<真實可用的>。
+
+=item 這是能用於上線的產品環境嗎？
+
+是的。
+
+Moose 已經成功用在許多公司和個人的上線產品環境。
+有些在產品環境中的 Moose 應用程式多年僅有很少的問題甚至沒有。
+我們認為它夠穩定，我們也持續提交修正來維持它穩定。
+
+當然，you need to make this call yourself。
+如果你有任何問題或疑慮，請不吝發電子郵件給 Stevan 或是 moose@perl.org 信件論壇，或是到 irc.perl.org#moose 發問。
+
+=item Moose 就是在 Perl 5 裡寫 Perl 6 嗎？
+
+不。Moose 相當程度的受到 Perl 6 啟發，但並不是 Perl 6。
+它是 Perl 5 的物件導向系統。
+Stevan 打造 Moose 是因為他對那些無趣的 Perl 5 物件導向程式碼感到厭倦，又對 Perl 6 物件系統垂涎三尺。
+因此他寫了 Moose 而非轉而使用 Ruby。
+
+=item 等等，I<後>現代，我想它只是I<現代>吧？
+
+Stevan 讀了 Larry Wall 在 1999 年 Linux World 的演講「Perl，第一個後現代電腦語言」。
+這場演講說明他如何為 Perl 選擇那些他覺得很酷的功能並丟棄那些他覺得很糟的。
+這讓 Stevan 覺得他對 Moose 做了同樣的事。
+我們為 Moose 從 Perl 6，CLOS（LISP），Smalltalk，Java，BETA，Ocaml，Ruby 等語言借用了功能，拋去那些我們不愛的部份（因為它們很糟）。
+所以 Stevan 又稱 Moose 為後現代物件系統。
+
+Nuff 如是說。
+
+=back
+
+=cut
