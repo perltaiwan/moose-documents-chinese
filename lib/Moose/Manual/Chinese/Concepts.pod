@@ -1,0 +1,362 @@
+package Moose::Manual::Concepts;
+
+# ABSTRACT: Moose 的物件導向觀念
+
+__END__
+
+=pod
+
+=head1 MOOSE 的物件導線觀念 (與 "傳統" Perl)
+
+過去，你也許沒有深入探究套件（packages）和類別，屬性和方法，建構子和方法有什麼不同。
+在 Moose 中這些在觀念上都是不同的，雖然在 Moose 的引擎蓋下，他們都是用傳統 Perl 實做。
+
+我們的中介物件協定對這些觀念提供了設計精良的反射機制，而 Moose 相對提供了可供區別的語法糖衣。
+Moose 也帶入了更多觀念如：角色，方法修飾子，和委任宣告式。
+
+
+Knowing what these concepts mean in Moose-speak, and how they used to
+be done in old school Perl 5 OO is a good way to start learning to use
+Moose.
+
+=head2 Class
+
+當你在套件內說「use Moose」，這個套件就是個類別。
+最簡單的狀況下，一個類別會由屬性和/或方法組成。
+類別也包含角色，方法修飾子，和其他東西。
+
+一個類別I<有>零個或更多B<屬性>。
+
+一個類別I<有>零個或更多B<方法>。
+
+一個類別I<有>零個或更多父類別。
+一個類別繼承他的父類別。
+
+一個類別I<有>零個或更多B<方法修飾子>。
+這些修飾子可以套用到它自己的方法或是繼承來的方法。
+
+一個類別I<作為>（和I<consumes>）零個或更多B<角色>。
+
+一個類別I<有>一個B<建構子>和一個B<解構子>。
+他們由 Moose 提供給你「隨意」使用。
+
+B<建構子>接受對應到類別屬性的具名參數，並用來初始化B<物件實例>。
+
+一個類別I<有>一個B<中介類別>，此中介類別有相對應的B<中介屬性>，B<中介方法>，B<中介角色>。
+中介類別I<描述>會描述類別。
+
+一個類別類別通常類比成名詞，像是「人們」或是「使用者們」。
+
+  package Person;
+
+  use Moose;
+  # 現在這是個 Moose 類別！
+
+=head2 屬性
+
+一個屬性是定義他的類別所有的一個特性。
+屬性I<總是>有名字，I<可能也有>一些其他特性。
+
+這些特性包括標示可否讀寫的旗標，一個型別，存取器的名稱，B<委任子>，預設值，等等。
+
+屬性I<不是>方法，不過定義屬性會產生存取器方法。
+一個正常的屬性至少會有一個「取」器方法。
+許多屬性會擁有其他方法，像是一個「存」器方法，一個清除器方法，或是一個判斷器方法（「是否已經設值？」）
+
+一個屬性也許定義了B<委任子>，這會新增方法去映射委任。
+
+預設下，Moose 把屬性以雜湊參照的形式存在物件實例內，I<但這不被使用 Moose 的作者直接看到>！
+最好把 Moose 屬性想成是一個不透明物件的「特性」。
+這些特性可以利用設計良好的存取器方法存取
+
+一個屬性是一個類別成員會有的東西。
+例如，人們有名字和姓氏。使用者有密碼和最後登入時間。
+
+  has 'first_name' => (
+      is  => 'rw',
+      isa => 'Str',
+  );
+
+=head2 方法
+
+定義B<方法>相當直覺，任何定義在你的類別中的函式（subroutine）就是方法。
+
+B<方法> 對應到動詞，是你的物件可以作的那些行為。
+例如，一個使用者可以登入。
+
+  sub login { ... }
+
+=head2 角色
+
+A role is something that a class I<does>. We also say that classes
+I<consume> roles. For example, a Machine class might do the Breakable
+role, and so could a Bone class. A role is used to define some concept
+that cuts across multiple unrelated classes, like "breakability", or
+"has a color".
+
+A role I<has> zero or more B<attributes>.
+
+A role I<has> zero or more B<methods>.
+
+A role I<has> zero or more B<method modifiers>.
+
+A role I<has> zero or more B<required methods>.
+
+A required method is not implemented by the role. Required methods are a way
+for the role to declare "to use this role you must implement this method".
+
+A role I<has> zero or more B<excluded roles>.
+
+An excluded role is a role that the role doing the excluding says it
+cannot be combined with.
+
+Roles are I<composed> into classes (or other roles). When a role is
+composed into a class, its attributes and methods are "flattened" into
+the class. Roles I<do not> show up in the inheritance hierarchy. When
+a role is composed, its attributes and methods appear as if they were
+defined I<in the consuming class>.
+
+Role are somewhat like mixins or interfaces in other OO languages.
+
+  package Breakable;
+
+  use Moose::Role;
+
+  requires 'break';
+
+  has 'is_broken' => (
+      is  => 'rw',
+      isa => 'Bool',
+  );
+
+  after 'break' => sub {
+      my $self = shift;
+
+      $self->is_broken(1);
+  };
+
+=head2 Method modifiers
+
+A B<method modifier> is a hook that is called when a named method is
+called. For example, you could say "before calling C<login()>, call
+this modifier first". Modifiers come in different flavors like
+"before", "after", "around", and "augment", and you can apply more
+than one modifier to a single method.
+
+Method modifiers are often used as an alternative to overriding a
+method in a parent class. They are also used in roles as a way of
+modifying methods in the consuming class.
+
+Under the hood, a method modifier is just a plain old Perl subroutine
+that gets called before or after (or around, etc.) some named method.
+
+  before 'login' => sub {
+      my $self = shift;
+      my $pw   = shift;
+
+      warn "Called login() with $pw\n";
+  };
+
+=head2 Type
+
+Moose also comes with a (miniature) type system. This allows you to define
+types for attributes. Moose has a set of built-in types based on the types
+Perl provides in its core, such as C<Str>, C<Num>, C<Bool>, C<HashRef>, etc.
+
+In addition, every class name in your application can also be used as
+a type name.
+
+Finally, you can define your own types with their own constraints. For
+example, you could define a C<PosInt> type, a subtype of C<Int> which only
+allows positive numbers.
+
+=head2 Delegation
+
+Moose attributes provide declarative syntax for defining delegations. A
+delegation is a method which in turn calls some method on an attribute to do
+its real work.
+
+=head2 Constructor
+
+A constructor creates an B<object instance> for the class. In old
+school Perl, this was usually done by defining a method called
+C<new()> which in turn called C<bless> on a reference.
+
+With Moose, this C<new()> method is created for you, and it simply
+does the right thing. You should never need to define your own
+constructor!
+
+Sometimes you want to do something whenever an object is created. In
+those cases, you can provide a C<BUILD()> method in your class. Moose
+will call this for you after creating a new object.
+
+=head2 Destructor
+
+This is a special method called when an object instance goes out of
+scope. You can specialize what your class does in this method if you
+need to, but you usually don't.
+
+With old school Perl 5, this is the C<DESTROY()> method, but with
+Moose it is the C<DEMOLISH()> method.
+
+=head2 Object instance
+
+An object instance is a specific noun in the class's "category". For
+example, one specific Person or User. An instance is created by the
+class's B<constructor>.
+
+An instance has values for its attributes. For example, a specific
+person has a first and last name.
+
+In old school Perl 5, this is often a blessed hash reference. With
+Moose, you should never need to know what your object instance
+actually is. (Okay, it's usually a blessed hashref with Moose, too.)
+
+=head2 Moose vs old school summary
+
+=over 4
+
+=item * Class
+
+A package with no introspection other than mucking about in the symbol
+table.
+
+With Moose, you get well-defined declaration and introspection.
+
+=item * Attributes
+
+Hand-written accessor methods, symbol table hackery, or a helper
+module like C<Class::Accessor>.
+
+With Moose, these are declaratively defined, and distinct from
+methods.
+
+=item * Method
+
+These are pretty much the same in Moose as in old school Perl.
+
+=item * Roles
+
+C<Class::Trait> or C<Class::Role>, or maybe C<mixin.pm>.
+
+With Moose, they're part of the core feature set, and are
+introspectable like everything else.
+
+=item * Method Modifiers
+
+Could only be done through serious symbol table wizardry, and you
+probably never saw this before (at least in Perl 5).
+
+=item * Type
+
+Hand-written parameter checking in your C<new()> method and accessors.
+
+With Moose, you define types declaratively, and then use them by name
+with your attributes.
+
+=item * Delegation
+
+C<Class::Delegation> or C<Class::Delegator>, but probably even more
+hand-written code.
+
+With Moose, this is also declarative.
+
+=item * Constructor
+
+A C<new()> method which calls C<bless> on a reference.
+
+Comes for free when you define a class with Moose.
+
+=item * Destructor
+
+A C<DESTROY()> method.
+
+With Moose, this is called C<DEMOLISH()>.
+
+=item * Object Instance
+
+A blessed reference, usually a hash reference.
+
+With Moose, this is an opaque thing which has a bunch of attributes
+and methods, as defined by its class.
+
+=item * Immutabilization
+
+Moose comes with a feature called "immutabilization". When you make
+your class immutable, it means you're done adding methods, attributes,
+roles, etc. This lets Moose optimize your class with a bunch of
+extremely dirty in-place code generation tricks that speed up things
+like object construction and so on.
+
+=back
+
+=head1 META WHAT?
+
+A metaclass is a class that describes classes. With Moose, every class you
+define gets a C<meta()> method. The C<meta()> method returns a
+L<Moose::Meta::Class> object, which has an introspection API that can tell you
+about the class it represents.
+
+  my $meta = User->meta();
+
+  for my $attribute ( $meta->get_all_attributes ) {
+      print $attribute->name(), "\n";
+
+      if ( $attribute->has_type_constraint ) {
+          print "  type: ", $attribute->type_constraint->name, "\n";
+      }
+  }
+
+  for my $method ( $meta->get_all_methods ) {
+      print $method->name, "\n";
+  }
+
+Almost every concept we defined earlier has a meta class, so we have
+L<Moose::Meta::Class>, L<Moose::Meta::Attribute>,
+L<Moose::Meta::Method>, L<Moose::Meta::Role>,
+L<Moose::Meta::TypeConstraint>, L<Moose::Meta::Instance>, and so on.
+
+=head1 BUT I NEED TO DO IT MY WAY!
+
+One of the great things about Moose is that if you dig down and find
+that it does something the "wrong way", you can change it by extending
+a metaclass. For example, you can have arrayref based objects, you can
+make your constructors strict (no unknown parameters allowed!), you can
+define a naming scheme for attribute accessors, you can make a class a
+Singleton, and much, much more.
+
+Many of these extensions require surprisingly small amounts of code,
+and once you've done it once, you'll never have to hand-code "your way
+of doing things" again. Instead you'll just load your favorite
+extensions.
+
+  package MyWay::User;
+
+  use Moose;
+  use MooseX::StrictConstructor
+  use MooseX::MyWay;
+
+  has ...;
+
+=head1 WHAT NEXT?
+
+So you're sold on Moose. Time to learn how to really use it.
+
+If you want to see how Moose would translate directly into old school
+Perl 5 OO code, check out L<Moose::Manual::Unsweetened>. This might be
+helpful for quickly wrapping your brain around some aspects of "the
+Moose way".
+
+Or you can skip that and jump straight to L<Moose::Manual::Classes>
+and the rest of the L<Moose::Manual>.
+
+After that we recommend that you start with the L<Moose::Cookbook>. If
+you work your way through all the recipes under the basics section,
+you should have a pretty good sense of how Moose works, and all of its
+basic OO features.
+
+After that, check out the Role recipes. If you're really curious, go
+on and read the Meta and Extending recipes, but those are mostly there
+for people who want to be Moose wizards and extend Moose itself.
+
+=cut
