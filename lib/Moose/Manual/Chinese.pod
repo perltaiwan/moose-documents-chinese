@@ -125,7 +125,7 @@ Moose 有許多屬性相關的功能。
 
 =item L<Moose::Manual::Chinese::Roles>
 
-角色說明一個類別可以做的事（像是「可以除錯」或是「可以印出」）。
+角色說明一個類別可以作的事（像是「可以除錯」或是「可以印出」）。
 角色提供一條途徑讓你不用繼承就可以增加類別的行為。
 
 =item L<Moose::Manual::Chinese::Types>
