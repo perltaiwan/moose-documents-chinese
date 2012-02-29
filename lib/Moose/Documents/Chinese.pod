@@ -1,0 +1,47 @@
+package Moose::Documents::Chinese;
+
+1;
+
+__END__
+
+=pod
+
+=head1 名稱
+
+Moose::Documents::Chinese
+
+=head1 描述
+
+Moose 是一個 Perl 5 上的後現代物件導向系統。
+係由為 Perl 6 設計物件系統的 Stevan 將大部分的概念在 Perl 5 內實作而成。
+由於 Perl 5 本身的物件導向概念在很多時候不是相當好用，
+即使對 Perl 相當嫻熟的駭客們有時都覺得很繁瑣。
+使用 Moose 來獲得類似或更甚於 Ruby 或 Python 的物件導向概念，
+新手可以免於馬上面對 Perl 5 的歷史包袱，
+老手也可以專注在要做的事情上而非達成的手段，
+Moose 已經成為近幾年 Perl 駭客們不可或缺的工具之一。
+按照 CPAN 地圖服務 http://mapofcpan.org/，
+CPAN 上有約一半的模組依賴 Moose，受到歡迎的程度可見一般。
+
+Moose::Documents::Chinese 不是第一個翻譯 Moose 文件的計畫。
+早先 Cornelius 曾經提出 Moose 文件翻譯計畫，
+打算仿照日本 Perl 協會將 Moose 相關文件翻譯為日文的作法，
+將 Moose 文件翻譯為中文。
+但由於事務繁忙而沒有下文。
+shelling 於 2012 年初也興起了翻譯此文件的想法，
+並在 github 上重新發起了此專案。
+
+目前主要會翻譯 Moose 本身隨附的文件：Moose::Manual 和 Moose::Cookbook。
+分別置於 Moose::Documents::Chinese::Manual 和 Moose::Documents::Chinese::Cookbook 這兩個名稱空間下。
+也就是說，Moose::Manual::Concepts 的中文翻譯就會變成 Moose::Documents::Chinese::Manual::Concepts，依此類推。
+當這兩份文件達到一定翻譯品質後，也可能考慮加入其他文件。
+
+=head1 想要共襄盛舉？
+
+此文件的主要版本控制系統目前放置在 http://github.com/perltaiwan，
+歡迎任何的修正與貢獻。
+一如 github 的文化：建立分支，提交修改，要求合併。
+
+歡迎加入。
+
+=cut

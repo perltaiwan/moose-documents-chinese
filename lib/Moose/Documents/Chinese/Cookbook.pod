@@ -1,0 +1,10 @@
+package Moose::Documents::Chinese::Cookbook;
+
+1;
+
+__END__
+
+=pod
+
+=cut
+
