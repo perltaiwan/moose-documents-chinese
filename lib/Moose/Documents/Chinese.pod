@@ -65,4 +65,41 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 歡迎加入。
 
+=head1 對照表
+
+如有雙引號 "" 出現，則代以「」。
+
+每份翻譯文件的 head1，item 等 POD 標記放置於相同行號，以便對照。
+
+中文文件每行以句號結尾
+
+
+=item Class
+
+Moose::Class 或簡稱 Class。譯作「類別」。
+
+=item Role 
+
+Moose::Role 或簡稱 Role。譯作「角色」。 
+
+=item constructor
+
+從類別建構物件的函式，譯作「建構子」。
+
+=item destructor
+
+摧毀物件並回收記憶體的函式，譯作「解構子」。
+
+=item package
+
+Perl 5 的關鍵字 package，譯作「套件」。
+
+=item introspect mechanism
+
+譯作「反射機制」。
+
+
+
+
+
 =cut
