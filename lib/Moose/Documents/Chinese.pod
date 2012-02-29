@@ -36,6 +36,21 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 也就是說，Moose::Manual::Concepts 的中文翻譯就會變成 Moose::Documents::Chinese::Manual::Concepts，依此類推。
 當這兩份文件達到一定翻譯品質後，也可能考慮加入其他文件。
 
+
+=head1 書目
+
+=over 4
+
+=item 手冊 L<Moose::Documents::Chinese::Manual>
+
+原文為 L<Moose::Manual>
+
+=item 食譜 L<Moose::Documents::Chinese::Cookbook>
+
+原文為 L<Moose::Cookbook>
+
+=back
+
 =head1 想要共襄盛舉？
 
 此文件的主要版本控制系統目前放置在 http://github.com/perltaiwan，
