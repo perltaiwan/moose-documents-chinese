@@ -1,4 +1,4 @@
-package Moose::Manual::Concepts;
+package Moose::Documents::Chinese::Manual::Concepts;
 
 # ABSTRACT: Moose 的物件導向觀念
 

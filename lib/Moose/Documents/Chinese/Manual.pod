@@ -1,4 +1,4 @@
-package Moose::Manual::Chinese;
+package Moose::Documents::Chinese::Manual;
 
 # ABSTRACT: Moose 是什麼以及如何使用
 

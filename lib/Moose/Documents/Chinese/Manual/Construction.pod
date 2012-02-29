@@ -1,4 +1,4 @@
-package Moose::Manual::Construction::Chinese;
+package Moose::Documents::Chinese::Manual::Construction;
 
 # ABSTRACT: 用 Moose 進行物件建構（與解構）
 
