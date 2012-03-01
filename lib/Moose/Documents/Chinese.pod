@@ -98,6 +98,14 @@ Perl 5 的關鍵字 package，譯作「套件」。
 
 譯作「反射機制」。
 
+=item Meta-Object Protocol, MOP
+
+譯作「中介物件協定」。
+
+=item Metaprogramming
+
+譯作「中介編程」。
+
 
 
 
