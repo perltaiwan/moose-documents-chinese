@@ -73,6 +73,8 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 中文文件每行以句號結尾
 
+括號使用全型括號（）。
+
 
 =item Class
 
@@ -106,7 +108,9 @@ Perl 5 的關鍵字 package，譯作「套件」。
 
 譯作「中介編程」。
 
+=item classes consume roles
 
+譯作「類別吸收角色」。
 
 
 

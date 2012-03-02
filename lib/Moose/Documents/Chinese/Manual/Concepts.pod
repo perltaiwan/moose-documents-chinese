@@ -14,10 +14,7 @@ __END__
 我們的中介物件協定對這些觀念提供了設計精良的反射機制，而 Moose 相對提供了可供區別的語法糖衣。
 Moose 也帶入了更多觀念如：角色，方法修飾子，和委任宣告式。
 
-
-Knowing what these concepts mean in Moose-speak, and how they used to
-be done in old school Perl 5 OO is a good way to start learning to use
-Moose.
+了解這些觀念載 Moose 話語中代表什麼和他們如何在原本的 Perl 5 物件導向系統中實作是學習 Moose 的好方法。
 
 =head2 Class
 
@@ -88,35 +85,32 @@ B<方法> 對應到動詞，是你的物件可以作的那些行為。
 
 =head2 角色
 
-A role is something that a class I<does>. We also say that classes
-I<consume> roles. For example, a Machine class might do the Breakable
-role, and so could a Bone class. A role is used to define some concept
-that cuts across multiple unrelated classes, like "breakability", or
-"has a color".
+一個角色是一個類別可以「I<作為>」的東西。
+也可以說一個類別「I<吸收>」角色。
+例如一個機器類別也許作為可打碎的角色，而一個骨頭類別也可以。
+一個角色被用來定義不相關的類別間共通一些觀念，像是「易碎性」，或是「有顏色」。
 
-A role I<has> zero or more B<attributes>.
+一個角色I<有>零個或更多B<屬性>。
 
-A role I<has> zero or more B<methods>.
+一個角色I<有>零個或更多B<方法>。
 
-A role I<has> zero or more B<method modifiers>.
+一個角色I<有>零個或更多B<方法修飾子>。
 
-A role I<has> zero or more B<required methods>.
+一個角色I<有>零個或更多B<必要方法>。
 
-A required method is not implemented by the role. Required methods are a way
-for the role to declare "to use this role you must implement this method".
+一個必要方法不實作在角色內。
+必要方法是讓角色可以宣告「使用本角色需要實作此方法」的方法。
 
-A role I<has> zero or more B<excluded roles>.
+一個角色I<有>零個或更多B<互斥角色>。
 
-An excluded role is a role that the role doing the excluding says it
-cannot be combined with.
+一個互斥角色是一個提出互斥的角色宣告為無法結合的角色。
 
-Roles are I<composed> into classes (or other roles). When a role is
-composed into a class, its attributes and methods are "flattened" into
-the class. Roles I<do not> show up in the inheritance hierarchy. When
-a role is composed, its attributes and methods appear as if they were
-defined I<in the consuming class>.
+角色可被組合進入類別或（其他角色）。
+當一個角色被組合進入類別，它的屬性和方法被「擠」入此類別。
+角色I<不會>出現在繼承階層。
+當一個角色被組合，它的屬性和方法就好像定義在I<吸收它的類別>。
 
-Role are somewhat like mixins or interfaces in other OO languages.
+角色和其他物件導向語言中的混入（mixins）或是介面（interfaces）有點相似。
 
   package Breakable;
 
