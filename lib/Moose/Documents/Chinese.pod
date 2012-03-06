@@ -112,6 +112,8 @@ Perl 5 的關鍵字 package，譯作「套件」。
 
 譯作「類別吸收角色」。
 
+=item in old school Perl
 
+譯作「在 Perl 的傳統作法中」
 
 =cut
