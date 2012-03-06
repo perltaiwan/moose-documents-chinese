@@ -16,9 +16,7 @@ __END__
 
 那就是了，你已經用 Moose 建立類別！
 
-
-There's actually a lot going on here under the hood, so let's step
-through it.
+這底下其實已經發生了許多事，讓我們看看。
 
 當你載入 L<Moose>，一些語法糖衣函式被注入你的類別。
 像是 C<extends>，C<has>，C<with>，和其他函式。
