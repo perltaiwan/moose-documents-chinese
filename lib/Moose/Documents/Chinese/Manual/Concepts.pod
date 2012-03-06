@@ -147,26 +147,23 @@ B<方法> 對應到動詞，是你的物件可以作的那些行為。
       warn "Called login() with $pw\n";
   };
 
-=head2 Type
+=head2 型別
 
-Moose also comes with a (miniature) type system. This allows you to define
-types for attributes. Moose has a set of built-in types based on the types
-Perl provides in its core, such as C<Str>, C<Num>, C<Bool>, C<HashRef>, etc.
+Moose 也內建一個微型型別系統。
+這讓你為屬性定義型別。
+Moose 有一組內建型別對應到 Perl 的原始型別，分別是 C<Str>，C<Num>，C<Bool>，C<HashRef> 等等。
 
-In addition, every class name in your application can also be used as
-a type name.
+除此之外，所有類別名稱都可以當作一個型別來用。
 
-Finally, you can define your own types with their own constraints. For
-example, you could define a C<PosInt> type, a subtype of C<Int> which only
-allows positive numbers.
+最後，你在定義型別時可以加上它們應有的限制。
+例如，你可以定義 C<PosInt> 型別，作為 C<Int> 的子型別，但是只允許正整數。
 
-=head2 Delegation
+=head2 委任
 
-Moose attributes provide declarative syntax for defining delegations. A
-delegation is a method which in turn calls some method on an attribute to do
-its real work.
+Moose 屬性可以用宣告式語法來定義委任。
+委任是一個方法把呼叫轉送給屬性處理的作法。
 
-=head2 Constructor
+=head2 建構子
 
 A constructor creates an B<object instance> for the class. In old
 school Perl, this was usually done by defining a method called
