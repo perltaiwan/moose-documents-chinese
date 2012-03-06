@@ -177,14 +177,12 @@ Moose 會在建立物件後呼叫此方法。
 
 =head2 解構子
 
-This is a special method called when an object instance goes out of
-scope. You can specialize what your class does in this method if you
-need to, but you usually don't.
+這是一個特別的方法，當一個物件實例不再被需要。
+如果需要，你可以在此方法中告訴你的類別應該特別作些什麼，但是通常不用。
 
-With old school Perl 5, this is the C<DESTROY()> method, but with
-Moose it is the C<DEMOLISH()> method.
+在 Perl 原本的作法中，這是 C<DESTROY()> 方法，但在 Moose 中則是 C<DEMOLISH()> 方法。
 
-=head2 Object instance
+=head2 物件實例
 
 An object instance is a specific noun in the class's "category". For
 example, one specific Person or User. An instance is created by the
