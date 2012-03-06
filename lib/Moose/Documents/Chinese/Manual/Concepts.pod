@@ -165,19 +165,17 @@ Moose 屬性可以用宣告式語法來定義委任。
 
 =head2 建構子
 
-A constructor creates an B<object instance> for the class. In old
-school Perl, this was usually done by defining a method called
-C<new()> which in turn called C<bless> on a reference.
+建構子為類別建立B<物件實例>。
+在 Perl 原本的作法中，通常會定義一個 C<new()> 方法，該方法對一個參照呼叫 C<bless> 並傳回。
 
-With Moose, this C<new()> method is created for you, and it simply
-does the right thing. You should never need to define your own
-constructor!
+在 Moose 中，C<new()> 方法已經定義好了，也有著正確的行為。
+你不需要定義自己的建構子！
 
-Sometimes you want to do something whenever an object is created. In
-those cases, you can provide a C<BUILD()> method in your class. Moose
-will call this for you after creating a new object.
+有時候你希望在物件建立時多作些什麼。
+這時候你可以在該類別中提供 C<BUILD> 方法。
+Moose 會在建立物件後呼叫此方法。
 
-=head2 Destructor
+=head2 解構子
 
 This is a special method called when an object instance goes out of
 scope. You can specialize what your class does in this method if you
