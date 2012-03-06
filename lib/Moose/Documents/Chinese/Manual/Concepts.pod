@@ -129,20 +129,16 @@ B<方法> 對應到動詞，是你的物件可以作的那些行為。
       $self->is_broken(1);
   };
 
-=head2 Method modifiers
+=head2 方法修飾子
 
-A B<method modifier> is a hook that is called when a named method is
-called. For example, you could say "before calling C<login()>, call
-this modifier first". Modifiers come in different flavors like
-"before", "after", "around", and "augment", and you can apply more
-than one modifier to a single method.
+一個 B<方法修飾子> 是一個具名方法被呼叫時才呼叫的掛勾。
+例如，你可以說「在呼叫 C<login()> 之前，呼叫這個修飾子」。
+有好幾種修飾子「before」，「after」，「around」，「augment」，而你可以在一個方法上套用多個修飾子。
 
-Method modifiers are often used as an alternative to overriding a
-method in a parent class. They are also used in roles as a way of
-modifying methods in the consuming class.
+方法修飾子通常作為複寫父類別方法的替代方案。
+也可以修飾角色中的方法。
 
-Under the hood, a method modifier is just a plain old Perl subroutine
-that gets called before or after (or around, etc.) some named method.
+除此之外，方法修飾子只是在某個具名方法呼叫前後被呼叫的 Perl 函式。
 
   before 'login' => sub {
       my $self = shift;
