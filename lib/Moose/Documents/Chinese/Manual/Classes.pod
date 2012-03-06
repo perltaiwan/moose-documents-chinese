@@ -59,17 +59,14 @@ Moose 提供一個語法糖衣來宣告你的父類別，C<extends>：
   has 'username' => ( is => 'rw' );
 
 注意每次呼叫 C<extends> 會I<重置>你的父類別。
-For multiple inheritance you must provide all the parents at once,
-C<extends 'Foo', 'Bar'>.
+如果想要多重繼承，你必須一口氣提供所有的父類別，C<extends 'Foo', 'Bar'>。
 
-You can use Moose to extend a non-Moose parent. However, when you do
-this, you will inherit the parent class's constructor (assuming it is
-also called C<new>). In that case, you will have to take care of
-initializing attributes manually, either in the parent's constructor,
-or in your subclass, and you will lose a lot of Moose magic.
+你可以用 Moose 來繼承非 Moose 的父類別。
+不過，當你這樣做，你會繼承到它的建構子（假設它也稱作 C<new>）。
+這樣你會需要自己手動處理初始化屬性的過程，不論是在父類別的建構子裡或是在你的類別裡，你會無法使用許多 Moose 的魔法。
 
-See the L<MooseX::NonMoose> module on CPAN if you're interested in extending
-non-Moose parent classes with Moose child classes.
+如果你對在 Moose 子類別中繼承非 Moose 的父類別有興趣，
+可以參考 CPAN 上的 L<MooseX::NonMoose> 模組。
 
 =head1 CLEANING UP MOOSE DROPPINGS
 
