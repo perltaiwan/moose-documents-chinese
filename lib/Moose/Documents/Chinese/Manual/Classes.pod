@@ -1,0 +1,133 @@
+package Moose::Documents::Chinese::Manual::Classes;
+
+# ABSTRACT: 用 Moose 打造你的類別（和子類別）
+
+__END__
+
+=pod
+
+=head1 使用 Moose
+
+使用 Moose 很簡單，你只需要寫 C<use Moose>:
+
+  package Person;
+
+  use Moose;
+
+那就是了，你已經用 Moose 建立類別！
+
+
+There's actually a lot going on here under the hood, so let's step
+through it.
+
+當你載入 L<Moose>，一些語法糖衣函式被注入你的類別。
+像是 C<extends>，C<has>，C<with>，和其他函式。
+這些函式被用來定義你的類別。例如，你也許定義一個屬性...
+
+  package Person;
+
+  use Moose;
+
+  has 'ssn' => ( is => 'rw' );
+
+屬性在 L<Moose::Documents::Chinese::Manual::Attributes> 中有更多描述
+
+載入 Moose 也會在該類別內啟用 C<strict> 和 C<warnings> 編譯指令。
+
+當你載入 Moose，你的類別會變成 L<Moose::Object> 的子類別。
+L<Moose::Object> 類別提供預設的建構子和解構子，還有物件建構輔助方法。
+你可以在 L<Moose::Documents::Chinese::Manual::Construction> 了解更多。
+
+方便起見，Moose 建立會為你的類別建立一個型別。
+請參考 L<Moose::Documents::Chinese::Manual::Types> 了解更多關於型別的內容。
+
+Moose 還會為你的類別建立一個 L<Moose::Meta::Class> 物件。
+這個中介類別物件可以對你的類別呼叫 C<meta> 方法來取得，例如：C<< Person->meta >>。
+
+這個中介類別物件提供一些反射類別 API 給你的類別。
+Moose 本身也在底層使用它來加入屬性，定義父類別，等等。
+事實上，所有的 Moose 糖衣都得呼叫這個中介類別物件（和其他中介 API 物件）來運作。
+
+=head1 子類別
+
+Moose 提供一個語法糖衣來宣告你的父類別，C<extends>：
+
+  package User;
+
+  use Moose;
+
+  extends 'Person';
+
+  has 'username' => ( is => 'rw' );
+
+注意每次呼叫 C<extends> 會I<重置>你的父類別。
+For multiple inheritance you must provide all the parents at once,
+C<extends 'Foo', 'Bar'>.
+
+You can use Moose to extend a non-Moose parent. However, when you do
+this, you will inherit the parent class's constructor (assuming it is
+also called C<new>). In that case, you will have to take care of
+initializing attributes manually, either in the parent's constructor,
+or in your subclass, and you will lose a lot of Moose magic.
+
+See the L<MooseX::NonMoose> module on CPAN if you're interested in extending
+non-Moose parent classes with Moose child classes.
+
+=head1 CLEANING UP MOOSE DROPPINGS
+
+Moose exports a number of functions into your class. It's a good idea to
+remove these sugar functions from your class's namespace, so that C<<
+Person->can('has') >> will no longer return true.
+
+There are several ways to do this. We recommend using L<namespace::autoclean>,
+a CPAN module. Not only will it remove Moose exports, it will also remove
+any other exports.
+
+  package Person;
+
+  use namespace::autoclean;
+
+  use Moose;
+
+If you absolutely can't use a CPAN module (but can use Moose?), you can write
+C<no Moose> at the end of your class. This will remove any Moose exports in
+your class.
+
+  package Person;
+
+  use Moose;
+
+  has 'ssn' => ( is => 'rw' );
+
+  no Moose;
+
+=head1 MAKING IT FASTER
+
+Moose has a feature called "immutabilization" that you can use to
+greatly speed up your classes at runtime. However, using it incurs
+a cost when your class is first being loaded. When you make your class
+immutable you tell Moose that you will not be changing it in the
+future. You will not be adding any more attributes, methods, roles, etc.
+
+This allows Moose to generate code specific to your class. In
+particular, it creates an "inline" constructor, making object
+construction much faster.
+
+To make your class immutable you simply call C<make_immutable> on your
+class's metaclass object.
+
+  __PACKAGE__->meta->make_immutable;
+
+=head2 Immutabilization and C<new()>
+
+If you override C<new()> in your class, then the immutabilization code
+will not be able to provide an optimized constructor for your
+class. Instead, you should use a C<BUILD()> method, which will be
+called from the inlined constructor.
+
+Alternately, if you really need to provide a different C<new()>, you
+can also provide your own immutabilization method. Doing so requires
+extending the Moose metaclasses, and is well beyond the scope of this
+manual.
+
+=cut
