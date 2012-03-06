@@ -310,25 +310,21 @@ extensions.
 
   has ...;
 
-=head1 WHAT NEXT?
+=head1 下一步該做什麼?
 
-So you're sold on Moose. Time to learn how to really use it.
+So you're sold on Moose. 
+是時候學習如何使用它了。
 
-If you want to see how Moose would translate directly into old school
-Perl 5 OO code, check out L<Moose::Manual::Unsweetened>. This might be
-helpful for quickly wrapping your brain around some aspects of "the
-Moose way".
+如果你希望知道 Moose 如何被翻譯回 Perl 傳統作法，請讀 L<Moose::Documents::Chinese::Manual::Unsweetened>。
+這對於把你的大腦沈浸在 Moose 的方式中可能有點用。
 
-Or you can skip that and jump straight to L<Moose::Manual::Classes>
-and the rest of the L<Moose::Manual>.
+或是你可以直接跳到 L<Moose::Documents::Chinese::Manual::Classes> 和 L<Moose::Documents::Chinese::Manual> 剩下的部份。
 
-After that we recommend that you start with the L<Moose::Cookbook>. If
-you work your way through all the recipes under the basics section,
-you should have a pretty good sense of how Moose works, and all of its
-basic OO features.
+After that we recommend that you start with the
+然後我們會建議你讀 L<Moose::Documents::Chinese::Cookbook>。
+如果你都讀過基礎章節的食譜了，你應該會相當了解 Moose 如何運作，和它所有的物件導向功能。
 
-After that, check out the Role recipes. If you're really curious, go
-on and read the Meta and Extending recipes, but those are mostly there
-for people who want to be Moose wizards and extend Moose itself.
+那之後可以讀一下關於角色的食譜。
+如果你真的很好奇，去讀讀關於中介和擴充的食譜，不過這是寫給那些希望成為 Moose 魔術師和擴充 Moose 的人。
 
 =cut
