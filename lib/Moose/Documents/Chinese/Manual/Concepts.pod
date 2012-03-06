@@ -282,25 +282,19 @@ C<meta()> 方法會回傳 L<Moose::Meta::Class> 物件，帶有反射機制的 A
       print $method->name, "\n";
   }
 
-Almost every concept we defined earlier has a meta class, so we have
 幾乎所有先前定義的觀念都有一個中介類別，所以我們還有
 L<Moose::Meta::Class>,，L<Moose::Meta::Attribute>，
 L<Moose::Meta::Method>，L<Moose::Meta::Role>，
 L<Moose::Meta::TypeConstraint>，L<Moose::Meta::Instance>，等等。
 
-=head1 BUT I NEED TO DO IT MY WAY!
+=head1 不過我需要自己的方式！
 
-One of the great things about Moose is that if you dig down and find
-that it does something the "wrong way", you can change it by extending
-a metaclass. For example, you can have arrayref based objects, you can
-make your constructors strict (no unknown parameters allowed!), you can
-define a naming scheme for attribute accessors, you can make a class a
-Singleton, and much, much more.
+關於 Moose 最棒的是，如果你發現它用了不對的方法。你可以改變它，只要擴充中介類別。
+例如，你可以有個基於陣列參照的物件，你可以讓你的建構子不接受它不清楚的參數，
+你可以為屬性存取器定義命名法則，你可以做出單體類別，和更多更多。
 
-Many of these extensions require surprisingly small amounts of code,
-and once you've done it once, you'll never have to hand-code "your way
-of doing things" again. Instead you'll just load your favorite
-extensions.
+許多擴充需要的程式碼驚人的少，一旦你完成它，你就不需要再次手寫這些「你要的方式」。
+你只需要載入你喜歡的模組就好。
 
   package MyWay::User;
 
@@ -320,7 +314,6 @@ So you're sold on Moose.
 
 或是你可以直接跳到 L<Moose::Documents::Chinese::Manual::Classes> 和 L<Moose::Documents::Chinese::Manual> 剩下的部份。
 
-After that we recommend that you start with the
 然後我們會建議你讀 L<Moose::Documents::Chinese::Cookbook>。
 如果你都讀過基礎章節的食譜了，你應該會相當了解 Moose 如何運作，和它所有的物件導向功能。
 
