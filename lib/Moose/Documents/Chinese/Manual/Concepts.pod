@@ -166,7 +166,7 @@ Moose 屬性可以用宣告式語法來定義委任。
 =head2 建構子
 
 建構子為類別建立B<物件實例>。
-在 Perl 原本的作法中，通常會定義一個 C<new()> 方法，該方法對一個參照呼叫 C<bless> 並傳回。
+在 Perl 傳統作法中，通常會定義一個 C<new()> 方法，該方法對一個參照呼叫 C<bless> 並傳回。
 
 在 Moose 中，C<new()> 方法已經定義好了，也有著正確的行為。
 你不需要定義自己的建構子！
@@ -180,105 +180,93 @@ Moose 會在建立物件後呼叫此方法。
 這是一個特別的方法，當一個物件實例不再被需要。
 如果需要，你可以在此方法中告訴你的類別應該特別作些什麼，但是通常不用。
 
-在 Perl 原本的作法中，這是 C<DESTROY()> 方法，但在 Moose 中則是 C<DEMOLISH()> 方法。
+在 Perl 傳統作法中，這是 C<DESTROY()> 方法，但在 Moose 中則是 C<DEMOLISH()> 方法。
 
 =head2 物件實例
 
-An object instance is a specific noun in the class's "category". For
-example, one specific Person or User. An instance is created by the
-class's B<constructor>.
+物件實例對於類別這個「目錄」是個特定語彙。
+例如，人類別或使用者類別會有一個特定的人或使用者。
+一個實例由類別的B<建構子>產生。
 
-An instance has values for its attributes. For example, a specific
-person has a first and last name.
+一個實例擁有其屬性的值。
+例如一個人的實例會有其名和姓。
 
-In old school Perl 5, this is often a blessed hash reference. With
-Moose, you should never need to know what your object instance
-actually is. (Okay, it's usually a blessed hashref with Moose, too.)
+在 Perl 傳統作法中，這通常是個雜湊參照。
+在 Moose 中，你不需要知道你的物件實例是什麼。
+（嗯，在 Moose 中通常也是個雜湊參照。）
 
-=head2 Moose vs old school summary
+=head2 總結 Moose 與傳統作法的比較
 
 =over 4
 
-=item * Class
+=item * 類別
 
-A package with no introspection other than mucking about in the symbol
-table.
+一個套件不會有反射機制，除了藉由觀看符號表。
 
-With Moose, you get well-defined declaration and introspection.
+在 Moose 中，你會有良好定義的宣告語法與反射機制。
 
-=item * Attributes
+=item * 屬性
 
-Hand-written accessor methods, symbol table hackery, or a helper
-module like C<Class::Accessor>.
+手寫的存取器方法，駭入符號表，或是用輔助模組，如：C<Class::Accessor>。
 
-With Moose, these are declaratively defined, and distinct from
-methods.
+在 Moose 中，宣告式的定義屬性，和方法有所區別。
 
-=item * Method
+=item * 方法
 
-These are pretty much the same in Moose as in old school Perl.
+在 Perl 傳統作法中和 Moose 中幾乎一樣。
 
-=item * Roles
+=item * 角色
 
-C<Class::Trait> or C<Class::Role>, or maybe C<mixin.pm>.
+C<Class::Trait> 或 C<Class::Role>， 或是 C<mixin.pm>.
 
-With Moose, they're part of the core feature set, and are
-introspectable like everything else.
+在 Moose 中，這些都是核心功能，也都是反射機制可以。
 
-=item * Method Modifiers
+=item * 方法修飾子
 
-Could only be done through serious symbol table wizardry, and you
-probably never saw this before (at least in Perl 5).
+只能透過在符號表上施展巫術，所以你可能根本沒看過這招（至少在 Perl 5）。
 
-=item * Type
+=item * 型別
 
-Hand-written parameter checking in your C<new()> method and accessors.
+透過在 C<new()> 和存取器中加入程式碼來作參數確認。
 
-With Moose, you define types declaratively, and then use them by name
-with your attributes.
+在 Moose 中你宣告式的定義型別，在屬性中直接使用
 
-=item * Delegation
+=item * 委任
 
-C<Class::Delegation> or C<Class::Delegator>, but probably even more
-hand-written code.
+C<Class::Delegation> 或是 C<Class::Delegator>，可能是更多手寫的程式碼。
 
-With Moose, this is also declarative.
+在 Moose 中，這也可以被宣告。
 
-=item * Constructor
+=item * 建構子
 
-A C<new()> method which calls C<bless> on a reference.
+一個 C<new()> 方法，會對一個參照呼叫 C<bless>。
 
-Comes for free when you define a class with Moose.
+Moose 提供可自由使用的建構子。
 
-=item * Destructor
+=item * 解構子
 
-A C<DESTROY()> method.
+一個 C<DESTROY()> 方法。
 
-With Moose, this is called C<DEMOLISH()>.
+在 Moose 中是 C<DEMOLISH()> 方法。
 
-=item * Object Instance
+=item * 物件實例
 
-A blessed reference, usually a hash reference.
+一個 blessed 的參照，通常是個雜湊參照。
 
-With Moose, this is an opaque thing which has a bunch of attributes
-and methods, as defined by its class.
+在 Moose 中，這是不透明的黑箱，放置了屬性和方法，如其類別中所定義。
 
-=item * Immutabilization
+=item * 凍結機制
 
-Moose comes with a feature called "immutabilization". When you make
-your class immutable, it means you're done adding methods, attributes,
-roles, etc. This lets Moose optimize your class with a bunch of
-extremely dirty in-place code generation tricks that speed up things
-like object construction and so on.
+Moose 引入「凍結機制」。當你讓類別凍結，代表你已經不再加入方法，屬性，角色等等。
+這讓 Moose 最佳化此類別，Moose 會用些很髒的方法，例如在類別中就地產生程式碼，這可以加速建構子和其他東西。
 
 =back
 
-=head1 META WHAT?
+=head1 中介了什麼
 
-A metaclass is a class that describes classes. With Moose, every class you
-define gets a C<meta()> method. The C<meta()> method returns a
-L<Moose::Meta::Class> object, which has an introspection API that can tell you
-about the class it represents.
+一個中介類別是一個描述類別的類別。
+在 Moose 中，每個你定義的類別會得到一個 C<meta()> 方法。
+C<meta()> 方法會回傳 L<Moose::Meta::Class> 物件，帶有反射機制的 API，這可以告訴你關於這個類別的事情。
 
   my $meta = User->meta();
 
@@ -295,9 +283,10 @@ about the class it represents.
   }
 
 Almost every concept we defined earlier has a meta class, so we have
-L<Moose::Meta::Class>, L<Moose::Meta::Attribute>,
-L<Moose::Meta::Method>, L<Moose::Meta::Role>,
-L<Moose::Meta::TypeConstraint>, L<Moose::Meta::Instance>, and so on.
+幾乎所有先前定義的觀念都有一個中介類別，所以我們還有
+L<Moose::Meta::Class>,，L<Moose::Meta::Attribute>，
+L<Moose::Meta::Method>，L<Moose::Meta::Role>，
+L<Moose::Meta::TypeConstraint>，L<Moose::Meta::Instance>，等等。
 
 =head1 BUT I NEED TO DO IT MY WAY!
 
