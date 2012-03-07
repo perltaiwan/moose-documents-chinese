@@ -68,15 +68,14 @@ Moose 提供一個語法糖衣來宣告你的父類別，C<extends>：
 如果你對在 Moose 子類別中繼承非 Moose 的父類別有興趣，
 可以參考 CPAN 上的 L<MooseX::NonMoose> 模組。
 
-=head1 CLEANING UP MOOSE DROPPINGS
+=head1 清除 Moose 的輸出
 
-Moose exports a number of functions into your class. It's a good idea to
-remove these sugar functions from your class's namespace, so that C<<
-Person->can('has') >> will no longer return true.
+Moose 輸出一些函式到你的類別。
+把這些語法糖衣從你的類別名稱空間移除是個好主意，這樣 C<< Person->can('has') >> 就不會為真。
 
-There are several ways to do this. We recommend using L<namespace::autoclean>,
-a CPAN module. Not only will it remove Moose exports, it will also remove
-any other exports.
+要這樣作有許多方法。
+我們建議使用 L<namespace::autoclean> 這個 CPAN 模組。
+不只是移除 Moose 輸出的函式，也會移除其他模組帶入的函式。
 
   package Person;
 
@@ -84,9 +83,8 @@ any other exports.
 
   use Moose;
 
-If you absolutely can't use a CPAN module (but can use Moose?), you can write
-C<no Moose> at the end of your class. This will remove any Moose exports in
-your class.
+如果你完全不能使用 CPAN 模組（但是可以用 Moose？），你可以類別的最後面寫 C<no Moose>。
+這會從你的類別移除所有 Moose 的輸出。
 
   package Person;
 
@@ -96,33 +94,25 @@ your class.
 
   no Moose;
 
-=head1 MAKING IT FASTER
+=head1 讓它跑快點
 
-Moose has a feature called "immutabilization" that you can use to
-greatly speed up your classes at runtime. However, using it incurs
-a cost when your class is first being loaded. When you make your class
-immutable you tell Moose that you will not be changing it in the
-future. You will not be adding any more attributes, methods, roles, etc.
+Moose 有「凍結」這樣的功能，可以用來讓類別在執行時期跑得快點。
+不過這會在第一次載入時多花點時間。
+當你讓你的類別凍結，這會告訴 Moose 你已經不再更動這個類別。
+你不能再加入更多屬性，方法，角色等等。
 
-This allows Moose to generate code specific to your class. In
-particular, it creates an "inline" constructor, making object
-construction much faster.
+這讓 Moose 針對你的類別產生程式碼。特別是會有個「行內」建構子，讓物件建構更快。
 
-To make your class immutable you simply call C<make_immutable> on your
-class's metaclass object.
+要讓你的物件凍結，只需對你的類別的中介類別物件呼叫 C<make_immutable> 
 
   __PACKAGE__->meta->make_immutable;
 
-=head2 Immutabilization and C<new()>
+=head2 凍結與 C<new()>
 
-If you override C<new()> in your class, then the immutabilization code
-will not be able to provide an optimized constructor for your
-class. Instead, you should use a C<BUILD()> method, which will be
-called from the inlined constructor.
+如果你在你的類別中覆寫 C<new()>，那麼就不能借助凍結來對建構子最佳化你的類別。
+反過來，你應該使用 C<BUILD> 方法，這會被行內建構子呼叫。
 
-Alternately, if you really need to provide a different C<new()>, you
-can also provide your own immutabilization method. Doing so requires
-extending the Moose metaclasses, and is well beyond the scope of this
-manual.
+或者，如果你確實需要提供不同的 C<new()>，你可以提供你自己的凍結方法。
+這需要擴充 Moose 中介類別，也超出這份手冊所能說明的部份了。
 
 =cut
