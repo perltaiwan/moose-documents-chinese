@@ -1,0 +1,323 @@
+package Moose::Documents::Chinese::Manual::Roles;
+
+# ABSTRACT: 角色，另一種階層和基礎類別
+
+__END__
+
+=pod
+
+=head1 什麼是角色
+
+一個角色封裝了一些可以在類別間分享的行為或是狀態。
+那是一些類別可以I<作>的東西。
+了解I<角色並非類別>是件重要的事。
+你不能繼承角色，而角色不能被初始化。
+我們有時會說角色被類別或是其他角色I<吸收>。
+
+相反地，一個角色被I<組合>進一個類別。
+從實務角度來看，這代表所有定義在角色內的方法，方法修飾子，和屬性都被直接加入（我們有時候說「鋪入（flattened into）」）吸收此角色的類別。
+這些屬性和方法就變得好像定義在此類別中一樣。
+此類別的子類別也會繼承到這些這些屬性和方法。
+
+Moose 的角色和其他語言中的混和（mixins）或介面（interfaces）很像。
+
+除了定義他們自己的方法或是屬性，角色也可以要求吸收它的類別自行定義某些方法。
+你可以有個角色只由一份必要方法的清單組成，這時它就很像 Java 的介面。
+
+注意在滿足角色的要求時，屬性存取器也會被當作方法。
+
+=head1 一個簡單的角色
+
+Creating a role looks a lot like creating a Moose class:
+
+  package Breakable;
+
+  use Moose::Role;
+
+  has 'is_broken' => (
+      is  => 'rw',
+      isa => 'Bool',
+  );
+
+  sub break {
+      my $self = shift;
+
+      print "I broke\n";
+
+      $self->is_broken(1);
+  }
+
+Except for our use of L<Moose::Role>, this looks just like a class
+definition with Moose. However, this is not a class, and it cannot be
+instantiated.
+
+Instead, its attributes and methods will be composed into classes
+which use the role:
+
+  package Car;
+
+  use Moose;
+
+  with 'Breakable';
+
+  has 'engine' => (
+      is  => 'ro',
+      isa => 'Engine',
+  );
+
+The C<with> function composes roles into a class. Once that is done,
+the C<Car> class has an C<is_broken> attribute and a C<break>
+method. The C<Car> class also C<does('Breakable')>:
+
+  my $car = Car->new( engine => Engine->new );
+
+  print $car->is_broken ? 'Busted' : 'Still working';
+  $car->break;
+  print $car->is_broken ? 'Busted' : 'Still working';
+
+  $car->does('Breakable'); # true
+
+This prints:
+
+  Still working
+  I broke
+  Busted
+
+We could use this same role in a C<Bone> class:
+
+  package Bone;
+
+  use Moose;
+
+  with 'Breakable';
+
+  has 'marrow' => (
+      is  => 'ro',
+      isa => 'Marrow',
+  );
+
+See also L<Moose::Cookbook::Roles::Comparable_CodeReuse> for an example.
+
+=head1 REQUIRED METHODS
+
+As mentioned previously, a role can require that consuming classes
+provide one or more methods. Using our C<Breakable> example, let's
+make it require that consuming classes implement their own C<break>
+methods:
+
+  package Breakable;
+
+  use Moose::Role;
+
+  requires 'break';
+
+  has 'is_broken' => (
+      is  => 'rw',
+      isa => 'Bool',
+  );
+
+  after 'break' => sub {
+      my $self = shift;
+
+      $self->is_broken(1);
+  };
+
+If we try to consume this role in a class that does not have a
+C<break> method, we will get an exception.
+
+You can see that we added a method modifier on C<break>. We want
+classes that consume this role to implement their own logic for
+breaking, but we make sure that the C<is_broken> attribute is always
+set to true when C<break> is called.
+
+  package Car
+
+  use Moose;
+
+  with 'Breakable';
+
+  has 'engine' => (
+      is  => 'ro',
+      isa => 'Engine',
+  );
+
+  sub break {
+      my $self = shift;
+
+      if ( $self->is_moving ) {
+          $self->stop;
+      }
+  }
+
+=head2 Roles Versus Abstract Base Classes
+
+If you are familiar with the concept of abstract base classes in other
+languages, you may be tempted to use roles in the same way.
+
+You I<can> define an "interface-only" role, one that contains I<just>
+a list of required methods.
+
+However, any class which consumes this role must implement all of the
+required methods, either directly or through inheritance from a
+parent. You cannot delay the method requirement check so that they can
+be implemented by future subclasses.
+
+Because the role defines the required methods directly, adding a base
+class to the mix would not achieve anything. We recommend that you
+simply consume the interface role in each class which implements that
+interface.
+
+=head2 Required Attributes
+
+As mentioned before, a role's required method may also be satisfied by an
+attribute accessor. However, the call to C<has> which defines an attribute
+happens at runtime. This means that you must define the attribute I<before>
+consuming the role, or else the role will not see the generated accessor.
+
+  package Breakable;
+
+  use Moose::Role;
+
+  requires 'stress';
+
+  package Car;
+
+  use Moose;
+
+  has 'stress' => (
+      is  => 'rw',
+      isa => 'Int',
+  );
+
+  with 'Breakable';
+
+=head1 USING METHOD MODIFIERS
+
+Method modifiers and roles are a very powerful combination.  Often, a
+role will combine method modifiers and required methods. We already
+saw one example with our C<Breakable> example.
+
+Method modifiers increase the complexity of roles, because they make
+the role application order relevant. If a class uses multiple roles,
+each of which modify the same method, those modifiers will be applied
+in the same order as the roles are used:
+
+  package MovieCar;
+
+  use Moose;
+
+  extends 'Car';
+
+  with 'Breakable', 'ExplodesOnBreakage';
+
+Assuming that the new C<ExplodesOnBreakage> method I<also> has an
+C<after> modifier on C<break>, the C<after> modifiers will run one
+after the other. The modifier from C<Breakable> will run first, then
+the one from C<ExplodesOnBreakage>.
+
+=head1 METHOD CONFLICTS
+
+If a class composes multiple roles, and those roles have methods of
+the same name, we will have a conflict. In that case, the composing
+class is required to provide its I<own> method of the same name.
+
+  package Breakdancer;
+
+  use Moose::Role
+
+  sub break {
+
+  }
+
+If we compose both C<Breakable> and C<Breakdancer> in a class, we must
+provide our own C<break> method:
+
+  package FragileDancer;
+
+  use Moose;
+
+  with 'Breakable', 'Breakdancer';
+
+  sub break { ... }
+
+A role can be a collection of other roles:
+
+  package Break::Bundle;
+
+  use Moose::Role;
+
+  with ('Breakable', 'Breakdancer');
+
+=head1 METHOD EXCLUSION AND ALIASING
+
+If we want our C<FragileDancer> class to be able to call the methods
+from both its roles, we can alias the methods:
+
+  package FragileDancer;
+
+  use Moose;
+
+  with 'Breakable'   => { -alias => { break => 'break_bone' } },
+       'Breakdancer' => { -alias => { break => 'break_dance' } };
+
+However, aliasing a method simply makes a I<copy> of the method with
+the new name. We also need to exclude the original name:
+
+  with 'Breakable' => {
+      -alias    => { break => 'break_bone' },
+      -excludes => 'break',
+      },
+      'Breakdancer' => {
+      -alias    => { break => 'break_dance' },
+      -excludes => 'break',
+      };
+
+The excludes parameter prevents the C<break> method from being composed
+into the C<FragileDancer> class, so we don't have a conflict. This
+means that C<FragileDancer> does not need to implement its own
+C<break> method.
+
+This is useful, but it's worth noting that this breaks the contract
+implicit in consuming a role. Our C<FragileDancer> class does both the
+C<Breakable> and C<BreakDancer>, but does not provide a C<break>
+method. If some API expects an object that does one of those roles, it
+probably expects it to implement that method.
+
+In some use cases we might alias and exclude methods from roles, but
+then provide a method of the same name in the class itself.
+
+Also see L<Moose::Cookbook::Roles::Restartable_AdvancedComposition> for an example.
+
+=head1 ROLE EXCLUSION
+
+A role can say that it cannot be combined with some other role. This
+should be used with great caution, since it limits the re-usability of
+the role.
+
+  package Breakable;
+
+  use Moose::Role;
+
+  excludes 'BreakDancer';
+
+=head1 ADDING A ROLE TO AN OBJECT INSTANCE
+
+You may want to add a role to an object instance, rather than to a class. For
+example, you may want to add debug tracing to one instance of an object while
+debugging a particular bug. Another use case might be to dynamically change
+objects based on a user's configuration, as a plugin system.
+
+The best way to do this is to use the C<apply_all_roles()> function from
+L<Moose::Util>:
+
+  use Moose::Util qw( apply_all_roles );
+
+  my $car = Car->new;
+  apply_all_roles( $car, 'Breakable' );
+
+This function can apply more than one role at a time, and will do so using the
+normal Moose role combination system. We recommend using this function to
+apply roles to an object. This is what Moose uses internally when you call
+C<with>.
+
+=cut
