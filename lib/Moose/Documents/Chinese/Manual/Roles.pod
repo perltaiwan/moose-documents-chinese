@@ -28,7 +28,7 @@ Moose 的角色和其他語言中的混和（mixins）或介面（interfaces）�
 
 =head1 一個簡單的角色
 
-Creating a role looks a lot like creating a Moose class:
+建立一個角色很像是建立一個 Moose 類別：
 
   package Breakable;
 
@@ -47,12 +47,10 @@ Creating a role looks a lot like creating a Moose class:
       $self->is_broken(1);
   }
 
-Except for our use of L<Moose::Role>, this looks just like a class
-definition with Moose. However, this is not a class, and it cannot be
-instantiated.
+除了使用 L<Moose::Role>，這看起來就像是 Moose 類別定義。
+不過這不是個類別，也不能被初始化。
 
-Instead, its attributes and methods will be composed into classes
-which use the role:
+相反地，他的屬性和方法會被組合進入使用此角色的類別：
 
   package Car;
 
@@ -65,9 +63,9 @@ which use the role:
       isa => 'Engine',
   );
 
-The C<with> function composes roles into a class. Once that is done,
-the C<Car> class has an C<is_broken> attribute and a C<break>
-method. The C<Car> class also C<does('Breakable')>:
+C<with> 這個函式把角色組合進類別。
+組合完後，C<Car> 這個類別就有了 C<is_broken> 屬性和 C<break> 方法。
+C<Car> 類別也變得可破壞（C<does('Breakable')>）：
 
   my $car = Car->new( engine => Engine->new );
 
@@ -77,13 +75,13 @@ method. The C<Car> class also C<does('Breakable')>:
 
   $car->does('Breakable'); # true
 
-This prints:
+這會印出
 
   Still working
   I broke
   Busted
 
-We could use this same role in a C<Bone> class:
+我們也可以把同樣的角色用在 C<Bone> 類別：
 
   package Bone;
 
@@ -96,7 +94,7 @@ We could use this same role in a C<Bone> class:
       isa => 'Marrow',
   );
 
-See also L<Moose::Cookbook::Roles::Comparable_CodeReuse> for an example.
+請同時參考 L<Moose::Documents::Chinese::Cookbook::Roles::Comparable_CodeReuse> 中的範例。
 
 =head1 REQUIRED METHODS
 
