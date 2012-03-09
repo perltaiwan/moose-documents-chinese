@@ -96,12 +96,10 @@ C<Car> 類別也變得可破壞（C<does('Breakable')>）：
 
 請同時參考 L<Moose::Documents::Chinese::Cookbook::Roles::Comparable_CodeReuse> 中的範例。
 
-=head1 REQUIRED METHODS
+=head1 必要方法
 
-As mentioned previously, a role can require that consuming classes
-provide one or more methods. Using our C<Breakable> example, let's
-make it require that consuming classes implement their own C<break>
-methods:
+如前所述，一個角色可以要求吸收它的類別提供方法。
+以 C<Breakable> 為例，我們讓它要求吸收它的類別自行實作 C<break> 方法。
 
   package Breakable;
 
@@ -120,13 +118,10 @@ methods:
       $self->is_broken(1);
   };
 
-If we try to consume this role in a class that does not have a
-C<break> method, we will get an exception.
+如果我們試著在沒有 C<break> 方法的類別中吸收此角色，我們會得到一個例外。
 
-You can see that we added a method modifier on C<break>. We want
-classes that consume this role to implement their own logic for
-breaking, but we make sure that the C<is_broken> attribute is always
-set to true when C<break> is called.
+你可以看到我們還對 C<break> 方法加上一個方法修飾子。
+我們希望吸收此角色的類別實作他們自己的破壞方法，但我們也確保 C<is_broken> 屬性也會在 C<break> 被呼叫後被設定為真。
 
   package Car
 
@@ -147,25 +142,20 @@ set to true when C<break> is called.
       }
   }
 
-=head2 Roles Versus Abstract Base Classes
+=head2 角色與抽象基礎類別的對比
 
-If you are familiar with the concept of abstract base classes in other
-languages, you may be tempted to use roles in the same way.
+如果你熟悉其他語言中抽象基礎類別的觀念，你也許會很想用同樣方式使用角色。
 
-You I<can> define an "interface-only" role, one that contains I<just>
-a list of required methods.
+你I<可以>定義一個「只有介面」的角色，這角色I<只>包含一個必要方法的清單。
 
-However, any class which consumes this role must implement all of the
-required methods, either directly or through inheritance from a
-parent. You cannot delay the method requirement check so that they can
+不過，任何吸收此角色的類別必須實作所有必要方法，無論是直接實作或是從父類別繼承。
+You cannot delay the method requirement check so that they can
 be implemented by future subclasses.
 
-Because the role defines the required methods directly, adding a base
-class to the mix would not achieve anything. We recommend that you
-simply consume the interface role in each class which implements that
-interface.
+因為角色直接定義必要方法，加入一個基礎類別來混入不會有額外好處。
+我們建議你就直接在每個實作此介面的類別中吸收此介面角色。
 
-=head2 Required Attributes
+=head2 必要屬性
 
 As mentioned before, a role's required method may also be satisfied by an
 attribute accessor. However, the call to C<has> which defines an attribute
