@@ -288,24 +288,21 @@ the role.
 
   excludes 'BreakDancer';
 
-=head1 ADDING A ROLE TO AN OBJECT INSTANCE
+=head1 把角色加入物件實例
 
-You may want to add a role to an object instance, rather than to a class. For
-example, you may want to add debug tracing to one instance of an object while
-debugging a particular bug. Another use case might be to dynamically change
-objects based on a user's configuration, as a plugin system.
+你也許想把角色加入物件實例中，而非加入類別。
+例如，在對特定問題除錯時，你也許希望針對一個實例來除錯。
+另一個使用案例可能是基於使用者的設定檔來動態調整物件，像是一個外掛系統。
 
-The best way to do this is to use the C<apply_all_roles()> function from
-L<Moose::Util>:
+使用 L<Moose::Util> 的 C<apply_all_roles()> 函式是最好的作法：
 
   use Moose::Util qw( apply_all_roles );
 
   my $car = Car->new;
   apply_all_roles( $car, 'Breakable' );
 
-This function can apply more than one role at a time, and will do so using the
-normal Moose role combination system. We recommend using this function to
-apply roles to an object. This is what Moose uses internally when you call
-C<with>.
+這個函式可以同時套用許多角色，而且會使用一般的 Moose 角色結合系統。
+我們建議使用這個函式來套用角色到物件。
+這是當你呼叫 C<with> 時 Moose 內部所使用的。
 
 =cut
