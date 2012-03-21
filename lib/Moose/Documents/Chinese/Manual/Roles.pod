@@ -157,10 +157,9 @@ be implemented by future subclasses.
 
 =head2 必要屬性
 
-As mentioned before, a role's required method may also be satisfied by an
-attribute accessor. However, the call to C<has> which defines an attribute
-happens at runtime. This means that you must define the attribute I<before>
-consuming the role, or else the role will not see the generated accessor.
+如前所述，一個角色的必要方法也可以實作成屬性存取器。
+不過，呼叫 C<has> 去定義屬性是發生在執行時期（runtime）。
+這意味著你必須在吸收類別I<前>就定義屬性，否則此角色不會看到被產生的存取器。
 
   package Breakable;
 
@@ -179,16 +178,14 @@ consuming the role, or else the role will not see the generated accessor.
 
   with 'Breakable';
 
-=head1 USING METHOD MODIFIERS
+=head1 使用方法修飾子
 
-Method modifiers and roles are a very powerful combination.  Often, a
-role will combine method modifiers and required methods. We already
-saw one example with our C<Breakable> example.
+方法修飾子和角色是非常有用的組合。
+通常，一個角色會結合方法修飾子和必要方法。
+我們已經從我們的 C<Breakable> 角色看到一個範例。
 
-Method modifiers increase the complexity of roles, because they make
-the role application order relevant. If a class uses multiple roles,
-each of which modify the same method, those modifiers will be applied
-in the same order as the roles are used:
+方法修飾子增加角色的複雜性，這關係到角色的套用順序。
+如果一個類別使用許多角色，每個角色都修飾同一方法，這些修飾子會如他們宣告時的順序被套用：
 
   package MovieCar;
 
@@ -198,16 +195,14 @@ in the same order as the roles are used:
 
   with 'Breakable', 'ExplodesOnBreakage';
 
-Assuming that the new C<ExplodesOnBreakage> method I<also> has an
-C<after> modifier on C<break>, the C<after> modifiers will run one
-after the other. The modifier from C<Breakable> will run first, then
-the one from C<ExplodesOnBreakage>.
+假設這新的 C<ExplodesOnBreakage> 角色I<也>有一個對 C<break> 的 C<after> 修飾子。
+此修飾子會在另一修飾子後執行。
+C<Breakable> 中的修飾子先執行，然後才輪到 C<ExplodesOnBreakage>。
 
-=head1 METHOD CONFLICTS
+=head1 方法衝突
 
-If a class composes multiple roles, and those roles have methods of
-the same name, we will have a conflict. In that case, the composing
-class is required to provide its I<own> method of the same name.
+如果類別用了許多角色，且這些角色有同名方法，此時會有衝突。
+這種狀況下，此類別會被要求I<自行>提供同名方法。
 
   package Breakdancer;
 
@@ -217,8 +212,7 @@ class is required to provide its I<own> method of the same name.
 
   }
 
-If we compose both C<Breakable> and C<Breakdancer> in a class, we must
-provide our own C<break> method:
+如果我們在一類別中組合 C<Breakable> 和 C<Breakdancer>，就得自行提供自己的 C<break> 方法：
 
   package FragileDancer;
 
@@ -228,7 +222,7 @@ provide our own C<break> method:
 
   sub break { ... }
 
-A role can be a collection of other roles:
+一個角色可以作為一群角色的集合：
 
   package Break::Bundle;
 
@@ -236,10 +230,9 @@ A role can be a collection of other roles:
 
   with ('Breakable', 'Breakdancer');
 
-=head1 METHOD EXCLUSION AND ALIASING
+=head1 方法排除和別名
 
-If we want our C<FragileDancer> class to be able to call the methods
-from both its roles, we can alias the methods:
+如果我們希望我們的 C<FragileDancer> 類別可以從兩個角色呼叫 C<break> 方法，我們可以建立方法別名：
 
   package FragileDancer;
 
@@ -248,8 +241,8 @@ from both its roles, we can alias the methods:
   with 'Breakable'   => { -alias => { break => 'break_bone' } },
        'Breakdancer' => { -alias => { break => 'break_dance' } };
 
-However, aliasing a method simply makes a I<copy> of the method with
-the new name. We also need to exclude the original name:
+不過，別名只是把此方法I<複製>到新名字。
+我們也需要排除原本的名字。
 
   with 'Breakable' => {
       -alias    => { break => 'break_bone' },
@@ -260,27 +253,21 @@ the new name. We also need to exclude the original name:
       -excludes => 'break',
       };
 
-The excludes parameter prevents the C<break> method from being composed
-into the C<FragileDancer> class, so we don't have a conflict. This
-means that C<FragileDancer> does not need to implement its own
-C<break> method.
+排除參數避免 C<break> 方法被組合入 C<FragileDancer> 類別，所以我們不會得到衝突。
+這代表 C<FragileDancer> 不需要實作其本身的 C<break> 方法。
 
-This is useful, but it's worth noting that this breaks the contract
-implicit in consuming a role. Our C<FragileDancer> class does both the
-C<Breakable> and C<BreakDancer>, but does not provide a C<break>
-method. If some API expects an object that does one of those roles, it
-probably expects it to implement that method.
+這很有用，不過它破壞了吸收此角色時隱含的合約。
+我們的 C<FragileDancer> 可同時作為 C<Breakable> 和 C<BreakDancer> 類別，不過並沒有提供 C<break> 方法。
+如果一些可程式化介面（API）接收一個作為此角色的物件，它會期待此物件有實作 C<break> 方法。
 
-In some use cases we might alias and exclude methods from roles, but
-then provide a method of the same name in the class itself.
+在一些使用案例中，我們也許會對角色方法作別名和排除，但是會接著在類別中提供同名方法。
 
-Also see L<Moose::Cookbook::Roles::Restartable_AdvancedComposition> for an example.
+請閱讀 L<Moose::Documents::Chinese::Cookbook::Roles::Restartable_AdvancedComposition> 中的範例。
 
-=head1 ROLE EXCLUSION
+=head1 角色排除
 
-A role can say that it cannot be combined with some other role. This
-should be used with great caution, since it limits the re-usability of
-the role.
+一個角色也可以說它不能和其他某些角色結合使用。
+這需要小心使用，因為它限制了此角色可複用性。
 
   package Breakable;
 
