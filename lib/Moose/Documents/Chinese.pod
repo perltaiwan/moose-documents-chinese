@@ -23,7 +23,7 @@ Moose 是一個 Perl 5 上的後現代物件導向系統。
 新手可以免於馬上面對 Perl 5 的歷史包袱，
 老手也可以專注在要做的事情上而非達成的手段，
 Moose 近幾年已經成為 Perl 駭客們不可或缺的工具之一。
-按照 CPAN 地圖服務 http://mapofcpan.org/ 顯示，
+按照 CPAN 地圖服務 L<http://mapofcpan.org/> 顯示，
 目前 CPAN 上有約一半的模組依賴 Moose。
 
 作為 Perl 6 的物件導向系統原型，
@@ -77,6 +77,7 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 括號使用全型括號（）。
 
+=over 4
 
 =item Class
 
@@ -117,5 +118,7 @@ Perl 5 的關鍵字 package，譯作「套件」。
 =item in old school Perl
 
 譯作「在 Perl 的傳統作法中」
+
+=back
 
 =cut
