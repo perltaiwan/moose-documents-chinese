@@ -6,6 +6,8 @@ __END__
 
 =pod
 
+=encoding utf8
+
 =head1 Moose 是什麼
 
 Moose 是一個完整的 Perl 5 物件系統。考慮一個現代化的物件導向語言（Perl 5 當然不是）。
