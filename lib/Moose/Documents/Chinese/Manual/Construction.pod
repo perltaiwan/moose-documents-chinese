@@ -6,6 +6,8 @@ __END__
 
 =pod
 
+=encoding
+
 =head1 建構子在哪裡？
 
 B<別為你的類別定義 C<new()> 方法！>

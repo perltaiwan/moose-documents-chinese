@@ -6,6 +6,8 @@ __END__
 
 =pod
 
+=encoding
+
 =head1 MOOSE 的物件導線觀念 (與 "傳統" Perl)
 
 過去，你也許沒有深入探究套件（packages）和類別，屬性和方法，建構子和方法有什麼不同。

@@ -6,6 +6,8 @@ __END__
 
 =pod
 
+=encoding
+
 =head1 INTRODUCTION
 
 Moose attributes have many properties, and attributes are probably the
