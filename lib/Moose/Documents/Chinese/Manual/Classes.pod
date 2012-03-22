@@ -6,7 +6,7 @@ __END__
 
 =pod
 
-=encoding
+=encoding utf8
 
 =head1 使用 Moose
 

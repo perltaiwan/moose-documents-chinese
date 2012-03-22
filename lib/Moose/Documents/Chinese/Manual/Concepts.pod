@@ -6,7 +6,7 @@ __END__
 
 =pod
 
-=encoding
+=encoding utf8
 
 =head1 MOOSE 的物件導線觀念 (與 "傳統" Perl)
 
