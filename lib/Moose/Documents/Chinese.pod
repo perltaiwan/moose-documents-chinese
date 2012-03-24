@@ -69,7 +69,7 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 =head1 關鍵字表
 
-遇到關鍵字不翻譯，避免術語混淆。
+遇到以下關鍵字不翻譯，避免術語混淆。
 
 如有雙引號 "" 出現，則代以「」。
 
@@ -83,43 +83,31 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 =item Class
 
-Moose::Class 或簡稱 Class。譯作「類別」。
+Moose::Class 或簡稱 Class。
 
 =item Role 
 
-Moose::Role 或簡稱 Role。譯作「角色」。 
+Moose::Role 或簡稱 Role。
 
 =item constructor
 
-從類別建構物件的函式，譯作「建構子」。
+從Class建構物件的函式。
 
 =item destructor
 
-摧毀物件並回收記憶體的函式，譯作「解構子」。
+摧毀物件並回收記憶體的函式。
 
 =item package
 
-Perl 5 的關鍵字 package，譯作「套件」。
-
 =item introspect mechanism
-
-譯作「反射機制」。
 
 =item Meta-Object Protocol, MOP
 
-譯作「中介物件協定」。
-
 =item Metaprogramming
-
-譯作「中介編程」。
 
 =item classes consume roles
 
-譯作「類別吸收角色」。
-
 =item in old school Perl
-
-譯作「在 Perl 的傳統作法中」
 
 =back
 
