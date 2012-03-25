@@ -23,9 +23,9 @@ Moose 屬性（attributes）有許多特點，屬性也許是 Moose 最強大和
 
 在其他語言中，屬性也可能稱為插槽（slots）或是特性（properties）。
 
-=head1 ATTRIBUTE OPTIONS
+=head1 屬性選項
 
-Use the C<has> function to declare an attribute:
+使用 C<has> 函式宣告屬性：
 
   package Person;
 
@@ -33,26 +33,21 @@ Use the C<has> function to declare an attribute:
 
   has 'first_name' => ( is => 'rw' );
 
-This says that all C<Person> objects have an optional read-write
-"first_name" attribute.
+這宣告所有的 C<Person> 物件會有一個可選的，可讀寫的 first_name 屬性。
 
-=head2 Read-write vs. read-only
+=head2 可讀寫與唯讀
 
-The options passed to C<has> define the properties of the attribute. There are
-many options, but in the simplest form you just need to set C<is>, which can
-be either C<ro> (read-only) or C<rw> (read-write). When an attribute is C<rw>,
-you can change it by passing a value to its accessor. When an attribute is
-C<ro>, you may only read the current value of the attribute.
+傳給 C<has> 的選項定義了此屬性的特性。
+有許多選項，最簡單的形式下你只需要設定 C<is>，其值可以是 C<ro>（唯讀）或是 C<rw>（可讀寫）。
+當屬性是 C<rw>，你可以傳值給存取器來改變屬性值。
+當屬性是 C<ro>，你只能讀取其值。
 
-In fact, you could even omit C<is>, but that gives you an attribute
-that has no accessor. This can be useful with other attribute options,
-such as C<handles>. However, if your attribute generates I<no>
-accessors, Moose will issue a warning, because that usually means the
-programmer forgot to say the attribute is read-only or read-write. If
-you really mean to have no accessors, you can silence this warning by
-setting C<is> to C<bare>.
+事實上，你能不要給 C<is>，但你會得到一個沒有存取器的屬性。
+有某些屬性選項時，這可能會有用，像是 C<handles>。
+不過，如果你的屬性C<沒有>產生存取器，Moose 會警告，因為這通常代表程式設計師忘了說此屬性為唯讀或可讀寫。
+如果你真的不想要存取器，你可以賦值 C<is> 為 C<bare> 來關閉此警告。
 
-=head2 Accessor methods
+=head2 存取器方法
 
 Each attribute has one or more accessor methods. An accessor lets you
 read and write the value of that attribute for an object.
