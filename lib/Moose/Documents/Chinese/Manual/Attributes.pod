@@ -8,24 +8,20 @@ __END__
 
 =encoding utf8
 
-=head1 INTRODUCTION
+=head1 簡介
 
-Moose attributes have many properties, and attributes are probably the
-single most powerful and flexible part of Moose. You can create a
-powerful class simply by declaring attributes. In fact, it's possible
-to have classes that consist solely of attribute declarations.
+Moose 屬性（attributes）有許多特點，屬性也許是 Moose 最強大和最有彈性的部份。
+你可以藉由宣告屬性來建立一個類別。
+事實上，很可能有許多類別僅僅由屬性宣告組成。
 
-An attribute is a property that every member of a class has. For
-example, we might say that "every C<Person> object has a first name and
-last name". Attributes can be optional, so that we can say "some C<Person>
-objects have a social security number (and some don't)".
+一個屬性是所有類別實體都會共有的特性。
+例如，我們可以說所有的 C<Person> 物件都有名和姓。
+屬性可以是可選的，我們也可以說有些 C<Person> 物件有社會安全號碼（而有些沒有）。
 
-At its simplest, an attribute can be thought of as a named value (as
-in a hash) that can be read and set. However, attributes can also have
-defaults, type constraints, delegation and much more.
+最簡單的想，一個屬性可以被想成一個有名字的值（像是在雜湊內），可以被讀取和賦值。
+不過，屬性也可以有預設值，型別限制，委任和其他功能。
 
-In other languages, attributes are also referred to as slots or
-properties.
+在其他語言中，屬性也可能稱為插槽（slots）或是特性（properties）。
 
 =head1 ATTRIBUTE OPTIONS
 
