@@ -30,12 +30,12 @@ Moose 近幾年已經成為 Perl 駭客們不可或缺的工具之一。
 了解 Moose 也能夠作為跨越到 Perl 6 概念的橋樑。
 
 Moose::Documents::Chinese 不是第一個翻譯 Moose 文件的計畫。
-早先 Cornelius 曾經提出 Moose 文件翻譯計畫，
-仿照日本 Perl 協會將 Moose 相關文件翻譯為日文的作法，
+早先 L<cornelius|http://metacpan.org/author/CORNELIUS> 曾經提出 Moose 文件翻譯計畫，
+仿照日本 Perl 協會將 Moose 相關文件翻譯為日文的L<作法|https://github.com/jpa/Moose-Doc-JA>，
 將 Moose 文件翻譯為中文。
 但由於事務繁忙而沒有下文。
-shelling 於 2012 年初也興起了翻譯此文件的想法，
-基於之前 Cornelius 所翻譯的文件多已散佚，
+L<shelling|http://metacpan.org/author/SHELLING> 於 2012 年初也興起了翻譯此文件的想法，
+基於之前 cornelius 所翻譯的文件多已散佚，
 在 github 上重新發起了此專案，
 也重新定義了可以發佈到 CPAN 上的名稱空間。
 
@@ -61,7 +61,7 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 =head1 想要共襄盛舉？
 
-此文件的主要版本控制系統目前放置在 http://github.com/perltaiwan，
+此文件的主要版本控制系統目前放置在 L<github|http://github.com/perltaiwan/moose-documents-chinese>，
 歡迎任何的修正與貢獻。
 一如 github 的文化：建立分支，提交修改，要求合併。
 
