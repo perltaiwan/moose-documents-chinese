@@ -141,3 +141,4 @@ Perl 5 關鍵字
 =head1 協作貢獻者
 
 shelling, Jia-Wei Hsu C<< <navyblueshellingford@gmail.com> >>, L<@shellingford|http://twitter.com/#!/shellingford>
+Wayne, Tsu-Wen Lin C<< <wayne2833@gmail.com> >>
