@@ -137,3 +137,7 @@ Perl 5 關鍵字
 =back
 
 =cut
+
+=head1 協作貢獻者
+
+shelling, Jia-Wei Hsu C<< <navyblueshellingford@gmail.com> >>
