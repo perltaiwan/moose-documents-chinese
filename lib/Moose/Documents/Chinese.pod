@@ -116,7 +116,7 @@ Perl 5 關鍵字
 
 =item introspect mechanism
 
-譯作「內省機制」。
+譯作「內觀機制」。
 
 =item in old school Perl
 
