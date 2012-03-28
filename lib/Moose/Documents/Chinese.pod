@@ -67,9 +67,11 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 歡迎加入。
 
-=head1 關鍵字表
+=head1 翻譯原則
 
-遇到以下關鍵字不翻譯，避免術語混淆。
+遇到關鍵字不翻譯，如關鍵字表所列。
+
+遇到翻譯對照表所列，依照對照表翻譯。
 
 如有雙引號 "" 出現，則代以「」。
 
@@ -79,35 +81,58 @@ shelling 於 2012 年初也興起了翻譯此文件的想法，
 
 括號使用全型括號（）。
 
+=head2 關鍵字表
+
+關鍵字表，表內所列不翻譯。
+
+=over 4
+
+=item package
+
+Perl 5 關鍵字
+
+=item Meta-
+
+=item Metaprogramming,
+
+=item Meta-Object Protocol, MOP
+
+部份書籍翻譯為元-編程，玄-編程，中介-編程。
+目前 Meta- 字首不翻譯。
+
+=back
+
+=head2 對照表
+
 =over 4
 
 =item Class
 
-Moose::Class 或簡稱 Class。
+譯作「類別」。暫訂
 
 =item Role 
 
-Moose::Role 或簡稱 Role。
-
-=item constructor
-
-從Class建構物件的函式。
-
-=item destructor
-
-摧毀物件並回收記憶體的函式。
-
-=item package
+指 Moose::Role，譯作「角色」。暫訂
 
 =item introspect mechanism
 
-=item Meta-Object Protocol, MOP
+譯作「內省機制」。
 
-=item Metaprogramming
+=item in old school Perl
+
+譯作「在 Perl 的傳統作法中」。
+
+=item constructor
+
+從Class建構物件的函式，譯作「建構子」。
+
+=item destructor
+
+摧毀物件並回收記憶體的函式，譯作「解構子」。
 
 =item classes consume roles
 
-=item in old school Perl
+譯作「類別吸收角色」。暫訂
 
 =back
 
