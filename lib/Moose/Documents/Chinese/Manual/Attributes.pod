@@ -49,39 +49,31 @@ Moose 屬性（attributes）有許多特點，屬性也許是 Moose 最強大和
 
 =head2 存取器方法
 
-Each attribute has one or more accessor methods. An accessor lets you
-read and write the value of that attribute for an object.
+每個屬性有一個或多個存取器方法。一個存取器讓你讀寫一個物件的屬性。
 
-By default, the accessor method has the same name as the attribute. If
-you declared your attribute as C<ro> then your accessor will be
-read-only. If you declared it read-write, you get a read-write
-accessor. Simple.
+預設上，存取器方法和屬性同名。
+如果你宣告你的屬性為C<唯讀>，你的存取器就是唯讀。
+如果將其宣告為C<可讀寫>，你得到一個可讀寫的存取器。
 
-Given our C<Person> example above, we now have a single C<first_name>
-accessor that can read or write a C<Person> object's C<first_name>
-attribute's value.
+以前面的 C<Person> 為例，我們現在有一個唯一的 C<first_name> 存取器可以讀寫 C<Person> 物件的 C<first_name> 屬性值。
 
-If you want, you can also explicitly specify the method names to be
-used for reading and writing an attribute's value. This is
-particularly handy when you'd like an attribute to be publicly
-readable, but only privately settable. For example:
+如果你希望，你也可以明確指定用來讀寫屬性的方法名稱。
+這在你希望屬性是可以公開讀取但是只供內部寫入時非常有用。
+例如：
 
   has 'weight' => (
       is     => 'ro',
       writer => '_set_weight',
   );
 
-This might be useful if weight is calculated based on other methods.
-For example, every time the C<eat> method is called, we might adjust
-weight. This lets us hide the implementation details of weight
-changes, but still provide the weight value to users of the class.
+這在 weight 是由其他方法計算出時也許很有用。
+例如，每次 C<eat> 方法被呼叫時我們都調整 weight。
+這讓我們隱藏更改 weight 的實作細節，但仍然提供此類別的使用者 weight 的值。
 
-Some people might prefer to have distinct methods for reading and
-writing. In I<Perl Best Practices>, Damian Conway recommends that
-reader methods start with "get_" and writer methods start with "set_".
+有些人也許傾向有使用明確區別的方法來分別執行讀寫。
+在 I<Perl 最佳實務>一書中，Damian Conway 就建議 reader 方法以「get_」為字首而 writer 方法以「set_」為字首。
 
-We can do exactly that by providing names for both the C<reader> and
-C<writer> methods:
+我們可以明確提供名字給 C<reader> 和 C<writer> 方法：
 
   has 'weight' => (
       is     => 'rw',
@@ -89,10 +81,9 @@ C<writer> methods:
       writer => 'set_weight',
   );
 
-If you're thinking that doing this over and over would be insanely
-tedious, you're right! Fortunately, Moose provides a powerful
-extension system that lets you override the default naming
-conventions. See L<Moose::Manual::MooseX> for more details.
+如果你覺得重複這樣寫真是冗長得令人發瘋，你是對的！
+幸運的是，Moose 提供一組外掛系統讓你覆寫命名慣例。
+請閱讀 L<Moose::Documents::Chinese::Manual::MooseX> 了解詳情。
 
 =head2 Predicate and clearer methods
 

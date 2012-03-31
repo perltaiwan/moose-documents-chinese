@@ -134,6 +134,10 @@ Perl 5 關鍵字
 
 譯作「classes 吸收 roles」。暫訂
 
+=item extension system
+
+譯作「外掛系統」。暫訂
+
 =back
 
 =cut
