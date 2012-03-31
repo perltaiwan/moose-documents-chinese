@@ -39,23 +39,23 @@ Moose 屬性（attributes）有許多特點，屬性也許是 Moose 最強大和
 
 傳給 C<has> 的選項定義了此屬性的特性。
 有許多選項，最簡單的形式下你只需要設定 C<is>，其值可以是 C<ro>（唯讀）或是 C<rw>（可讀寫）。
-當屬性是 C<rw>，你可以傳值給存取器來改變屬性值。
+當屬性是 C<rw>，你可以傳值給 accessor 來改變屬性值。
 當屬性是 C<ro>，你只能讀取其值。
 
-事實上，你能不要給 C<is>，但你會得到一個沒有存取器的屬性。
+事實上，你能不要給 C<is>，但你會得到一個沒有 accessor 的屬性。
 有某些屬性選項時，這可能會有用，像是 C<handles>。
-不過，如果你的屬性C<沒有>產生存取器，Moose 會警告，因為這通常代表程式設計師忘了說此屬性為唯讀或可讀寫。
-如果你真的不想要存取器，你可以賦值 C<is> 為 C<bare> 來關閉此警告。
+不過，如果你的屬性C<沒有>產生 accessor，Moose 會警告，因為這通常代表程式設計師忘了說此屬性為唯讀或可讀寫。
+如果你真的不想要 accessor，你可以賦值 C<is> 為 C<bare> 來關閉此警告。
 
-=head2 存取器方法
+=head2 Accessor 方法
 
-每個屬性有一個或多個存取器方法。一個存取器讓你讀寫一個物件的屬性。
+每個屬性有一個或多個 accessor 方法。一個 accessor 讓你讀寫一個物件的屬性。
 
-預設上，存取器方法和屬性同名。
-如果你宣告你的屬性為C<唯讀>，你的存取器就是唯讀。
-如果將其宣告為C<可讀寫>，你得到一個可讀寫的存取器。
+預設上，方法和屬性同名。
+如果你宣告你的屬性為 C<ro>，你的 accessor 就是唯讀。
+如果將其宣告為 C<rw>，你得到一個可讀寫的 accessor 。
 
-以前面的 C<Person> 為例，我們現在有一個唯一的 C<first_name> 存取器可以讀寫 C<Person> 物件的 C<first_name> 屬性值。
+以前面的 C<Person> 為例，我們現在有一個唯一的 C<first_name> accessor 可以讀寫 C<Person> 物件的 C<first_name> 屬性值。
 
 如果你希望，你也可以明確指定用來讀寫屬性的方法名稱。
 這在你希望屬性是可以公開讀取但是只供內部寫入時非常有用。
@@ -85,24 +85,18 @@ Moose 屬性（attributes）有許多特點，屬性也許是 Moose 最強大和
 幸運的是，Moose 提供一組外掛系統讓你覆寫命名慣例。
 請閱讀 L<Moose::Documents::Chinese::Manual::MooseX> 了解詳情。
 
-=head2 Predicate and clearer methods
+=head2 Predicate and clearer 方法
 
-Moose allows you to explicitly distinguish between a false or
-undefined attribute value and an attribute which has not been set. If
-you want to access this information, you must define clearer and
-predicate methods for an attribute.
+Moose 讓你可以明確區別屬性為布林假值或是尚未定義。
+如果你希望存取此資訊，請為屬性定義 clearer 和 predicate 方法。
 
-A predicate method tells you whether or not a given attribute is
-currently set. Note that an attribute can be explicitly set to
-C<undef> or some other false value, but the predicate will return
-true.
+一個 predicate 方法告訴你屬性是否已經定義。
+注意屬性在明確的被設定為 C<undef> 或其他布林假值後，其 predicate 仍可以返回布林真值。
 
-The clearer method unsets the attribute. This is I<not> the
-same as setting the value to C<undef>, but you can only distinguish
-between them if you define a predicate method!
+而 clearer 方法淨空屬性。
+這I<不>是將屬性設定為 C<undef>，你只能藉由定義 predicate 方法來分辨！
 
-Here's some code to illustrate the relationship between an accessor,
-predicate, and clearer method.
+這裡有些程式碼描述 accessor，predicate，clearer 之間的關係。
 
   package Person;
 
@@ -134,36 +128,28 @@ predicate, and clearer method.
   my $person2 = Person->new( ssn => '111-22-3333');
   $person2->has_ssn; # true
 
-By default, Moose does not make a predicate or clearer for you. You must
-explicitly provide names for them, and then Moose will create the methods
-for you.
+預設上，Moose 不會為你定義 predicate 或 clearer。
+你必須明確提供它們的名字，Moose 才會建立它們。
 
-=head2 Required or not?
+=head2 必要嗎？
 
-By default, all attributes are optional, and do not need to be
-provided at object construction time. If you want to make an attribute
-required, simply set the C<required> option to true:
+預設上，所有屬性都是可選用的，而且不需要在物件建構期間就提供。
+如果你希望一個屬性是必要的，請將 C<required> 設為布林真值。
 
   has 'name' => (
       is       => 'ro',
       required => 1,
   );
 
-There are a couple caveats worth mentioning in regards to what
-"required" actually means.
+關於「required」代表什麼，會有兩件事值得先提醒在先。
 
-Basically, all it says is that this attribute (C<name>) must be provided to
-the constructor, or be lazy with either a default or a builder. It does not
-say anything about its value, so it could be C<undef>.
+基本上，這是說這個 attribute（C<name>）必須被提供給 constructor，或是有個預設值，或是有 builder 方法。
+這沒有規範其值，所以也可以是 C<undef>。
 
-If you define a clearer method on a required attribute, the clearer
-I<will> work, so even a required attribute can be unset after object
-construction.
+如果你為一個必要的 attribute 定義 clearer，此 clearer I<會>發揮作用，所以必要的 attribute 可以在物件建立後被淨空。
 
-This means that if you do make an attribute required, providing a
-clearer doesn't make much sense. In some cases, it might be handy to
-have a I<private> C<clearer> and C<predicate> for a required
-attribute.
+這意味著如果你宣告一個 attribute 為必要，同時提供 clearer 就不太有意義了。
+但有時候，必要的 attribute 有I<內部可用>的 clearer 和 predicate 可能是有用的。
 
 =head2 Default and builder methods
 
