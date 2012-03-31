@@ -91,6 +91,22 @@ L<shelling|http://metacpan.org/author/SHELLING> 於 2012 年初也興起了翻�
 
 Perl 5 關鍵字
 
+=item class
+
+指產生物件的類別定義。
+
+=item role
+
+指 Moose::Role。
+
+=item constructor
+
+建力物件時呼叫的類別函式
+
+=item destructor
+
+摧毀物件並回收記憶體的函式。
+
 =item Meta-
 
 =item Metaprogramming,
@@ -106,14 +122,6 @@ Perl 5 關鍵字
 
 =over 4
 
-=item Class
-
-譯作「類別」。暫訂
-
-=item Role 
-
-指 Moose::Role，譯作「角色」。暫訂
-
 =item introspect mechanism
 
 譯作「內觀機制」。
@@ -122,17 +130,9 @@ Perl 5 關鍵字
 
 譯作「在 Perl 的傳統作法中」。
 
-=item constructor
-
-從Class建構物件的函式，譯作「建構子」。
-
-=item destructor
-
-摧毀物件並回收記憶體的函式，譯作「解構子」。
-
 =item classes consume roles
 
-譯作「類別吸收角色」。暫訂
+譯作「classes 吸收 roles」。暫訂
 
 =back
 
