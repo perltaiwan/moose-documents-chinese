@@ -69,17 +69,29 @@ L<shelling|http://metacpan.org/author/SHELLING> 於 2012 年初也興起了翻�
 
 =head1 翻譯原則
 
+=over 4
+
+=item 關鍵字
+
 遇到關鍵字不翻譯，如關鍵字表所列。
+
+=item 對照表
 
 遇到翻譯對照表所列，依照對照表翻譯。
 
-如有雙引號 "" 出現，則代以「」。
+=item 標點符號
+
+如有英式引號 "" 出現，則代以中式引號「」。
+
+括號使用全型括號：（）。
+
+不使用頓號：、。
+
+中文文件每行以句號結尾。
+
+=item 其他
 
 每份翻譯文件的 head1，item 等 POD 標記放置於相同行號，以便對照。
-
-中文文件每行以句號結尾
-
-括號使用全型括號（）。
 
 =head2 關鍵字表
 
@@ -106,6 +118,20 @@ Perl 5 關鍵字
 =item destructor
 
 摧毀物件並回收記憶體的函式。
+
+=item accessor
+
+=item reader
+
+=item writer
+
+指存取物件屬性用的方法。
+
+=item predicate
+
+=item clearer
+
+指存取物件存取資訊的方法。
 
 =item Meta-
 
