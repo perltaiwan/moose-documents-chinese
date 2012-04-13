@@ -59,23 +59,18 @@ Moose 自動讓你的套件成為 L<Moose::Object> 的子類別。
 L<Moose::Object> 類別為屬性提供了建構子，和其他功能。
 細節請參考 L<Moose::Object>。
 
-Now, onto the keywords. The first one we see here is C<has>, which
-defines an instance attribute in our class:
+現在這些關鍵字中，我們第一個看到的是 C<has>, C<has>定義了class的instance attribute：
 
   has 'x' => (isa => 'Int', is => 'rw', required => 1);
 
-This will create an attribute named C<x>. The C<isa> parameter says
-that we expect the value stored in this attribute to pass the type
-constraint for C<Int> (1). The accessor generated for this attribute
-will be read-write.
+這行程式會創立一個名叫C<x>的 attribute。 C<isa> 這個 parameter 代表我們限制用C<Int>型態來傳值（1）。
+這個由 accessor 產生的 attibute 不僅容易讀而且容易寫。
 
 The C<< required => 1 >> parameter means that this attribute must be
 provided when a new object is created. A point object without
 coordinates doesn't make much sense, so we don't allow it.
 
-We have defined our attributes; next we define our methods. In Moose,
-as with regular Perl 5 OO, a method is just a subroutine defined
-within the package:
+至此我們介紹如何定義 attribute，接下來我們介紹如何定義 method。在Moose之中定義 method 就像在 Perl 5 的 OO 定義 subroutine一樣:
 
   sub clear {
       my $self = shift;
