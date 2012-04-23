@@ -151,13 +151,11 @@ Moose 讓你可以明確區別屬性為布林假值或是尚未定義。
 這意味著如果你宣告一個 attribute 為必要，同時提供 clearer 就不太有意義了。
 但有時候，必要的 attribute 有I<內部可用>的 clearer 和 predicate 可能是有用的。
 
-=head2 Default and builder methods
+=head2 預設方法和 builder 方法
 
-Attributes can have default values, and Moose provides two ways to
-specify that default.
+屬性可以有預設值，而 Moose 提供兩種方法去指定預設值。
 
-In the simplest form, you simply provide a non-reference scalar value
-for the C<default> option:
+最簡單的形式，你可以提供非參照的純量值給 C<default> 選項：
 
   has 'size' => (
       is        => 'ro',
@@ -165,15 +163,13 @@ for the C<default> option:
       predicate => 'has_size',
   );
 
-If the size attribute is not provided to the constructor, then it ends
-up being set to C<medium>:
+如果 size 這個屬性沒有提供給 constructor，那麼它會被設成 C<medium>：
 
   my $person = Person->new();
   $person->size; # medium
   $person->has_size; # true
 
-You can also provide a subroutine reference for C<default>. This
-reference will be called as a method on the object.
+你可以提供函式參照給 C<default>。此參照會被當作此物件的方法來呼叫。
 
   has 'size' => (
       is => 'ro',
@@ -182,11 +178,9 @@ reference will be called as a method on the object.
       predicate => 'has_size',
   );
 
-This is a trivial example, but it illustrates the point that the subroutine
-will be called for every new object created.
+這是一個沒什麼用的範例，不過他闡述了每次物件被建立時，此函式會被呼叫的事實。
 
-When you provide a C<default> subroutine reference, it is called as a
-method on the object, with no additional parameters:
+當你提供一個 C<default> 函式參照，他會被當作物件的方法呼叫，不帶任何額外參數。
 
   has 'size' => (
       is      => 'ro',
@@ -197,38 +191,32 @@ method on the object, with no additional parameters:
       },
   );
 
-When the C<default> is called during object construction, it may be
-called before other attributes have been set. If your default is
-dependent on other parts of the object's state, you can make the
-attribute C<lazy>. Laziness is covered in the next section.
+當此 C<default> 在物件建構期間被呼叫，它有可能在其他屬性被設值前被呼叫。
+如果此預設值依賴此物件其他部份的狀態，你可以讓此屬性 C<lazy>。
+Laziness 在下個段落會被提及。
 
-If you want to use a reference of any sort as the default value, you
-must return it from a subroutine.
+如果你希望用任何一種參照來作為此預設值，它必須從一個函式中 return。
 
   has 'mapping' => (
       is      => 'ro',
       default => sub { {} },
   );
 
-This is necessary because otherwise Perl would instantiate the reference
-exactly once, and it would be shared by all objects:
+這是必要的否則 Perl 只會初始化此參照一次，然後它會被所有物件共享：
 
   has 'mapping' => (
       is      => 'ro',
       default => {}, # wrong!
   );
 
-Moose will throw an error if you pass a bare non-subroutine reference
-as the default.
+如果你傳入一個非函式參照的參照，Moose 會拋出錯誤。
 
-If Moose allowed this then the default mapping attribute could easily
-end up shared across many objects. Instead, wrap it in a subroutine
-reference as we saw above.
+如果 Moose 允許此方式，此預設值會很容易在所有物件間共享。
+相反的，如上所示，得將其包裹在函式參照中。
 
-This is a bit awkward, but it's just the way Perl works.
+這有點笨拙，不過這是 Perl 運作的模式。
 
-As an alternative to using a subroutine reference, you can supply a C<builder>
-method for your attribute:
+你可以提供 C<builder> 方法給你的屬性，這是函式參照的替代方案：
 
   has 'size' => (
       is        => 'ro',
@@ -240,15 +228,12 @@ method for your attribute:
       return ( 'small', 'medium', 'large' )[ int( rand 3 ) ];
   }
 
-This has several advantages. First, it moves a chunk of code to its own named
-method, which improves readability and code organization. Second, because this
-is a I<named> method, it can be subclassed or provided by a role.
+這有許多優點。首先，它將一團程式碼移到具名的方法中，這改善了可讀性和程式碼的組織。
+其二，因為這是個I<具名>方法，這可以被子類別使用或是被 role 提供。
 
-We strongly recommend that you use a C<builder> instead of a
-C<default> for anything beyond the most trivial default.
+只要你的預設值不是個最簡單的預設值，我們強烈建議你使用 C<builder> 而非 C<default>。
 
-A C<builder>, just like a C<default>, is called as a method on the
-object with no additional parameters.
+一個 C<builder>，就像是一個 default，被當作物件的方法呼叫，也不帶任何額外參數。
 
 =head3 Builders allow subclassing
 
